@@ -1,0 +1,112 @@
+
+
+library(readxl)
+library(dplyr)
+
+
+
+dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")
+
+dim(dados)
+names(dados)
+str(dados)
+summary(dados)
+
+
+dados <- dados %>%
+  rename(
+    municipio = `Município [-]`,
+    area_territorial = `Área Territorial - km² [2025]`,
+    populacao = `População no último censo - pessoas [2022]`,
+    densidade_demografica = `Densidade demográfica - hab/km² [2022]`,
+    populacao_estimada = `População estimada - pessoas [2025]`,
+    escolarizacao = `Escolarização <span>6 a 14 anos</span> - % [2022]`,
+    idhm = `IDHM <span>Índice de desenvolvimento humano municipal</span> [2010]`,
+    mortalidade_infantil = `Mortalidade infantil - óbitos por mil nascidos vivos [2023]`,
+    receitas_brutas = `Total de receitas brutas realizadas - R$ [2024]`,
+    despesas_brutas = `Total de despesas brutas empenhadas - R$ [2024]`,
+    pib_per_capita = `PIB per capita - R$ [2023]`
+  )
+
+names(dados)
+
+
+
+colSums(is.na(dados))
+
+faltantes <- data.frame(
+  variavel = names(dados),
+  n_na = colSums(is.na(dados)),
+  perc_na = round(
+    colSums(is.na(dados)) / nrow(dados) * 100,
+    2
+  )
+)
+
+faltantes
+
+
+
+sum(dados$mortalidade_infantil == "-")
+
+dados <- dados %>%
+  mutate(
+    mortalidade_infantil = na_if(
+      mortalidade_infantil,
+      "-"
+    )
+  )
+
+dados <- dados %>%
+  mutate(
+    mortalidade_infantil =
+      as.numeric(mortalidade_infantil)
+  )
+
+str(dados)
+
+
+
+colSums(is.na(dados))
+
+faltantes_finais <- data.frame(
+  variavel = names(dados),
+  n_na = colSums(is.na(dados)),
+  perc_na = round(
+    colSums(is.na(dados)) / nrow(dados) * 100,
+    2
+  )
+)
+
+faltantes_finais
+
+
+
+sum(duplicated(dados$municipio))
+
+
+
+range(dados$idhm, na.rm = TRUE)
+
+range(dados$escolarizacao, na.rm = TRUE)
+
+min(dados$mortalidade_infantil, na.rm = TRUE)
+
+min(dados$area_territorial)
+
+min(dados$populacao)
+
+min(dados$populacao_estimada)
+
+min(dados$pib_per_capita)
+
+min(dados$receitas_brutas)
+
+min(dados$despesas_brutas)
+
+
+
+str(dados)
+
+summary(dados)
+
