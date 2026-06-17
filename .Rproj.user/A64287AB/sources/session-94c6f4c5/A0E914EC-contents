@@ -1,8 +1,5 @@
-
-
 library(readxl)
 library(dplyr)
-
 
 
 dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")

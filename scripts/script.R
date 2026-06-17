@@ -1,8 +1,5 @@
-
-
 library(readxl)
 library(dplyr)
-
 
 
 dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")
@@ -110,9 +107,3 @@ str(dados)
 
 summary(dados)
 
-
-write.csv(
-  dados,
-  "BaseDadosIBGE_MG_Limpa.csv",
-  row.names = FALSE
-)
