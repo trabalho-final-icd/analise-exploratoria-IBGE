@@ -107,3 +107,156 @@ str(dados)
 
 summary(dados)
 
+
+library(ggplot2)
+library(paletteer)
+library(MetBrewer)
+library(scales)
+
+
+cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
+
+tema_trabalho <- theme_minimal() +
+  theme(
+    plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 14
+    ),
+    axis.title = element_text(face = "bold")
+  )
+
+ggplot(
+  dados,
+  aes(
+    x = pib_per_capita,
+    y = escolarizacao
+  )
+) +
+  geom_point(
+    color = cores[1],
+    alpha = 0.7,
+    size = 2
+  ) +
+  scale_x_log10(
+    labels = label_number(big.mark = ".")
+  ) +
+  labs(
+    title = "PIB per capita e Escolarização",
+    x = "PIB per capita (R$)",
+    y = "Escolarização (%)"
+  ) +
+  tema_trabalho
+
+
+ggplot(
+  dados,
+  aes(
+    x = pib_per_capita,
+    y = mortalidade_infantil
+  )
+) +
+  geom_point(
+    color = cores[2],
+    alpha = 0.7,
+    size = 2
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = TRUE,
+    color = cores[7]
+  ) +
+  scale_x_log10(
+    labels = label_number(big.mark = ".")
+  ) +
+  labs(
+    title = "PIB per capita e Mortalidade Infantil",
+    x = "PIB per capita (R$)",
+    y = "Mortalidade Infantil"
+  ) +
+  tema_trabalho
+
+
+ggplot(
+  dados,
+  aes(
+    x = idhm,
+    y = escolarizacao
+  )
+) +
+  geom_point(
+    color = cores[3],
+    alpha = 0.7,
+    size = 2
+  ) +
+  geom_smooth(
+    method = "lm",
+    se = TRUE,
+    color = cores[8]
+  ) +
+  labs(
+    title = "IDHM e Escolarização",
+    x = "IDHM",
+    y = "Escolarização (%)"
+  ) +
+  tema_trabalho
+
+
+
+dados$faixa_idhm <- cut(
+  dados$idhm,
+  breaks = quantile(
+    dados$idhm,
+    probs = seq(0, 1, 0.25),
+    na.rm = TRUE
+  ),
+  include.lowest = TRUE
+)
+
+
+ggplot(
+  dados,
+  aes(
+    x = faixa_idhm,
+    y = mortalidade_infantil,
+    fill = faixa_idhm
+  )
+) +
+  geom_boxplot() +
+  scale_fill_paletteer_d("MetBrewer::Pissaro") +
+  labs(
+    title = "Mortalidade Infantil por Faixa de IDHM",
+    x = "Faixa de IDHM",
+    y = "Mortalidade Infantil"
+  ) +
+  tema_trabalho +
+  theme(
+    legend.position = "none"
+  )
+
+
+ggplot(
+  dados,
+  aes(
+    x = receitas_brutas,
+    y = despesas_brutas
+  )
+) +
+  geom_point(
+    color = cores[5],
+    alpha = 0.7,
+    size = 2
+  ) +
+  scale_x_log10(
+    labels = label_number(big.mark = ".")
+  ) +
+  scale_y_log10(
+    labels = label_number(big.mark = ".")
+  ) +
+  labs(
+    title = "Receitas e Despesas Municipais",
+    x = "Receitas Brutas (R$)",
+    y = "Despesas Brutas (R$)"
+  ) +
+  tema_trabalho
+

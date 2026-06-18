@@ -1,6 +1,5 @@
 ---
-title: "Relatório Análise Exploratória de Dados com Informações Municipais do
-IBGE"
+title: "Relatório"
 format: html
 editor: visual
 ---
