@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-## 1 Introdução
+## 1. Introdução
 
 ## 2. Leitura e tratamento dos dados
 
@@ -17,3 +17,95 @@ Durante a etapa de tratamento, observou-se que a variável de mortalidade infant
 Também foi realizada a verificação de valores ausentes, de registros duplicados de municípios e de possíveis inconsistências nos dados. Para isso, foram analisados os intervalos das variáveis numéricas, verificando-se se os valores observados eram compatíveis com a natureza de cada indicador. Não foram identificados municípios duplicados nem valores incompatíveis com os limites esperados das variáveis.
 
 Após essas etapas, a base foi considerada adequada para a realização das análises descritivas, construções gráficas e estudos de associação apresentados nas seções seguintes.
+
+## 3. Medidas de resumo
+
+# 3.1 Área territorial
+
+- Média: 687,59
+
+- Mediana: 363,82
+
+- Coeficiente de variação: 140,47%
+
+A área média maior que a mediana indica que a maior parte dos dados se concentram em valores mais baixos, ou seja, pode-se afirmar que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. O coeficiente de variação indica que esses valores possuem uma dispersão muito alta.
+
+# 3.2 População
+
+- Média: 24.079,71
+
+- Mediana: 8.048
+
+- Coeficiente de variação: 391,84%
+
+O coeficiente de variação indica uma dispersão extremamente alta para os valores de população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana indica que metade das cidades de Minas possuem 8.048 cidadãos ou menos no momento observado. O a proporção da média 3 vezes maior do que a mediana condiz com o coeficiente de variação obtido.
+
+# 3.3 Densidade demográfica
+
+- Média: 69,09
+
+- Mediana: 22,09
+
+- Coeficiente de variação: 455,11%
+
+Coeficiente de dispersão extremamente alto. Há muitas cidades com densidade demográfica baixa e poucas com esse valor muito alto, tal qual nas úlltimas análises.
+
+# 3.4 População estimada
+
+- Média: 25.080,24
+
+- Mediana: 8.237
+
+- Coeficiente de variação: 393,82%
+
+De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
+
+# 3.5 Escolarização
+
+- Média: 98,99%
+
+- Mediana: 99,29%
+
+- Coeficiente de variação: 1,37%
+
+O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior parte dos municípios em Minas possuem taxa de escolarização igual ou menor do que 99,29%. A média de valor menor indica que podem existir algumas cidades com essa taxa menor de forma mais discrepante, puxando a média para baixo.
+
+# 3.6 IDHM
+
+- Média: 0,67
+
+- Mediana: 0,67
+
+- Coeficiente de variação: 7,43%
+
+Os valores de média e mediana iguais indicam que os dados se apresentam de forma simétrrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outrass variáveis, o IDHM se mantem relativamente estável.
+
+# 3.7 Mortalidade infantil
+
+- Média: 18,66
+
+- Mediana: 14,51
+
+- Coeficiente de variação: 73,58%
+
+O alto coeficiente de variação indica que os dados são distribuídos de forma não homogênea. A média maior que a mediana indica assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo uma possível desigualdade.
+
+# 3.8 Receitas/Despesas brutas
+
+- Médias: 181mi/173mi
+
+- Medianas: 56mi/52mi
+
+- Coeficientes de variação: 468%/471%
+
+Valores indicam que existe uma distribuição extremamente desigual dos valores. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
+
+# 3.9 PIB per capita
+
+- Média: 34.487,09
+
+- Mediana: 24.727,70
+
+- Coeficiente de variação: 96,62%
+
+Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, alguma poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.

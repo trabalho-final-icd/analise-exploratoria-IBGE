@@ -57,8 +57,7 @@ dados <- dados %>%
 dados <- dados %>%
   mutate(
     mortalidade_infantil =
-      as.numeric(mortalidade_infantil)
-  )
+      as.numeric(mortalidade_infantil))
 
 str(dados)
 
@@ -106,7 +105,9 @@ min(dados$despesas_brutas)
 str(dados)
 
 summary(dados)
+str 
 
+<<<<<<< HEAD
 
 library(ggplot2)
 library(paletteer)
@@ -260,3 +261,144 @@ ggplot(
   ) +
   tema_trabalho
 
+=======
+#HÁGATA - medidas de resumo para variáveis numéricas
+numericas <- dados %>% select(where(is.numeric))
+#selecionando numéricas
+
+estatisticas <- data.frame(
+  Variavel = names(numericas),
+  Media = round(sapply(numericas, mean, na.rm = TRUE), 2),
+  Mediana = round(sapply(numericas, median, na.rm = TRUE), 2),
+  Minimo = round(sapply(numericas, min, na.rm = TRUE), 2),
+  Maximo = round(sapply(numericas, max, na.rm = TRUE), 2),
+  DP = round(sapply(numericas, sd, na.rm = TRUE), 2),
+  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2))
+#calculando estatísticas
+print(estatisticas)
+write.csv(estatisticas, "estatisticas_descritivas.csv", row.names = FALSE)
+#exibir e salvar
+tabela_resumida <- data.frame(
+  Variável = c(
+    "Área Territorial (km²)",
+    "População (Censo 2022)",
+    "Densidade Demográfica (hab/km²)",
+    "População Estimada (2025)",
+    "Escolarização 6-14 anos (%)",
+    "IDHM",
+    "Mortalidade Infantil (óbitos/1000)",
+    "Receitas Brutas (R$)",
+    "Despesas Brutas (R$)",
+    "PIB per Capita (R$)"
+  ),
+  
+  Média = round(sapply(numericas, mean, na.rm = TRUE), 2),
+  Mediana = round(sapply(numericas, median, na.rm = TRUE), 2),
+  Mínimo = round(sapply(numericas, min, na.rm = TRUE), 2),
+  Máximo = round(sapply(numericas, max, na.rm = TRUE), 2),
+  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2)
+)
+
+
+tabela_resumida$Média <- format(tabela_resumida$Média, big.mark = ".", decimal.mark = ",")
+tabela_resumida$Mediana <- format(tabela_resumida$Mediana, big.mark = ".", decimal.mark = ",")
+tabela_resumida$Mínimo <- format(tabela_resumida$Mínimo, big.mark = ".", decimal.mark = ",")
+tabela_resumida$Máximo <- format(tabela_resumida$Máximo, big.mark = ".", decimal.mark = ",")
+
+print(tabela_resumida)
+#criando tabela resumida
+
+encontrar_municipio <- function(df, var, tipo = "max") {
+  df_clean <- df[!is.na(df[[var]]), ]
+  
+  if (nrow(df_clean) == 0) {
+    return(NA)
+  }
+  
+  if (tipo == "max") {
+    valor <- max(df_clean[[var]], na.rm = TRUE)
+  } else {
+    valor <- min(df_clean[[var]], na.rm = TRUE)
+  }
+  
+  municipios <- df_clean$municipio[df_clean[[var]] == valor]
+  
+  return(municipios[1])
+}
+
+tabela_extremos <- data.frame(
+     Variável = c(
+           "Área Territorial (km²)",
+           "População (Censo 2022)",
+           "Densidade Demográfica (hab/km²)",
+           "População Estimada (2025)",
+           "Escolarização 6-14 anos (%)",
+           "IDHM",
+           "Mortalidade Infantil (óbitos/1000)",
+           "Receitas Brutas (R$)",
+           "Despesas Brutas (R$)",
+           "PIB per Capita (R$)"
+        ),
+       
+        `Mínimo` = c(
+             min(dados$area_territorial, na.rm = TRUE),
+             min(dados$populacao, na.rm = TRUE),
+             min(dados$densidade_demografica, na.rm = TRUE),
+             min(dados$populacao_estimada, na.rm = TRUE),
+              min(dados$escolarizacao, na.rm = TRUE),
+              min(dados$idhm, na.rm = TRUE),
+              min(dados$mortalidade_infantil, na.rm = TRUE),
+             min(dados$receitas_brutas, na.rm = TRUE),
+             min(dados$despesas_brutas, na.rm = TRUE),
+              min(dados$pib_per_capita, na.rm = TRUE)
+         ),
+     
+       `Município (Mín)` = c(
+             encontrar_municipio(dados, "area_territorial", "min"),
+             encontrar_municipio(dados, "populacao", "min"),
+             encontrar_municipio(dados, "densidade_demografica", "min"),
+             encontrar_municipio(dados, "populacao_estimada", "min"),
+             encontrar_municipio(dados, "escolarizacao", "min"),
+            encontrar_municipio(dados, "idhm", "min"),
+             encontrar_municipio(dados, "mortalidade_infantil", "min"),
+             encontrar_municipio(dados, "receitas_brutas", "min"),
+             encontrar_municipio(dados, "despesas_brutas", "min"),
+              encontrar_municipio(dados, "pib_per_capita", "min")
+          ),
+      
+        `Máximo` = c(
+             max(dados$area_territorial, na.rm = TRUE),
+               max(dados$populacao, na.rm = TRUE),
+           max(dados$densidade_demografica, na.rm = TRUE),
+             max(dados$populacao_estimada, na.rm = TRUE),
+               max(dados$escolarizacao, na.rm = TRUE),
+               max(dados$idhm, na.rm = TRUE),
+               max(dados$mortalidade_infantil, na.rm = TRUE),
+               max(dados$receitas_brutas, na.rm = TRUE),
+               max(dados$despesas_brutas, na.rm = TRUE),
+               max(dados$pib_per_capita, na.rm = TRUE)
+           ),
+      
+         `Município (Máx)` = c(
+               encontrar_municipio(dados, "area_territorial", "max"),
+               encontrar_municipio(dados, "populacao", "max"),
+               encontrar_municipio(dados, "densidade_demografica", "max"),
+               encontrar_municipio(dados, "populacao_estimada", "max"),
+               encontrar_municipio(dados, "escolarizacao", "max"),
+               encontrar_municipio(dados, "idhm", "max"),
+               encontrar_municipio(dados, "mortalidade_infantil", "max"),
+               encontrar_municipio(dados, "receitas_brutas", "max"),
+               encontrar_municipio(dados, "despesas_brutas", "max"),
+               encontrar_municipio(dados, "pib_per_capita", "max")
+           )
+   )
+
+   
+   tabela_extremos$Mínimo <- format(round(tabela_extremos$Mínimo, 2), 
+    big.mark = ".", decimal.mark = ",")
+ tabela_extremos$Máximo <- format(round(tabela_extremos$Máximo, 2), 
+     big.mark = ".", decimal.mark = ",")
+ 
+   #exibir
+   print(tabela_extremos)
+>>>>>>> 2c832626a41e3d29fcc031eec46b029a3de99606
