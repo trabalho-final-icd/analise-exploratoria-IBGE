@@ -4,9 +4,17 @@ format: html
 editor: visual
 ---
 
-## 1. Introdução
+# 1. Introdução
 
-## 2. Leitura e tratamento dos dados
+A análise de dados é uma ferramenta importante para compreender diferentes aspectos da realidade social, econômica e demográfica de uma região. A partir da exploração de indicadores estatísticos, é possível identificar padrões, comparar municípios e observar relações entre variáveis que ajudam a explicar fenômenos presentes na sociedade.
+
+Neste trabalho, foi utilizada uma base de dados contendo informações de todos os municípios de Minas Gerais, reunindo indicadores relacionados à população, educação, saúde, desenvolvimento humano, finanças públicas e atividade econômica. A diversidade de informações disponíveis permite uma visão ampla das características dos municípios mineiros e de suas diferenças socioeconômicas.
+
+Inicialmente, foi realizada a leitura e o tratamento dos dados, com o objetivo de verificar a consistência das informações e preparar a base para as análises. Em seguida, foram elaboradas tabelas, medidas descritivas e representações gráficas para explorar o comportamento das variáveis selecionadas.
+
+Além da análise individual dos indicadores, também foram investigadas possíveis relações entre desenvolvimento humano, escolarização, mortalidade infantil, PIB per capita e finanças municipais. Dessa forma, busca-se compreender como diferentes aspectos da realidade socioeconômica dos municípios estão associados, contribuindo para uma interpretação mais ampla dos dados analisados.
+
+# 2. Leitura e tratamento dos dados
 
 A base de dados foi importada para o R por meio da função read_xlsx() do pacote readxl. O conjunto de dados contém informações referentes aos 853 municípios do estado de Minas Gerais, abrangendo indicadores demográficos, sociais e econômicos.
 
@@ -18,9 +26,15 @@ Também foi realizada a verificação de valores ausentes, de registros duplicad
 
 Após essas etapas, a base foi considerada adequada para a realização das análises descritivas, construções gráficas e estudos de associação apresentados nas seções seguintes.
 
-## 3. Medidas de resumo
+## 2.1 Tratamentos adicionais para visualização dos dados
 
-# 3.1 Área territorial
+Para a construção do gráfico de boxplot que relaciona mortalidade infantil e IDHM, foi criada uma variável auxiliar contendo faixas de IDHM. Essa categorização foi realizada a partir da divisão dos valores de IDHM em quartis, permitindo agrupar os municípios em níveis de desenvolvimento humano semelhantes e facilitar a comparação da distribuição da mortalidade infantil entre os grupos.
+
+Ressalta-se que essa transformação foi utilizada apenas para fins de visualização gráfica, não alterando os valores originais da variável IDHM presentes na base de dados.
+
+# 3. Medidas de resumo
+
+## 3.1 Área territorial
 
 - Média: 687,59
 
@@ -30,7 +44,7 @@ Após essas etapas, a base foi considerada adequada para a realização das aná
 
 A área média maior que a mediana indica que a maior parte dos dados se concentram em valores mais baixos, ou seja, pode-se afirmar que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. O coeficiente de variação indica que esses valores possuem uma dispersão muito alta.
 
-# 3.2 População
+## 3.2 População
 
 - Média: 24.079,71
 
@@ -40,7 +54,7 @@ A área média maior que a mediana indica que a maior parte dos dados se concent
 
 O coeficiente de variação indica uma dispersão extremamente alta para os valores de população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana indica que metade das cidades de Minas possuem 8.048 cidadãos ou menos no momento observado. O a proporção da média 3 vezes maior do que a mediana condiz com o coeficiente de variação obtido.
 
-# 3.3 Densidade demográfica
+## 3.3 Densidade demográfica
 
 - Média: 69,09
 
@@ -50,7 +64,7 @@ O coeficiente de variação indica uma dispersão extremamente alta para os valo
 
 Coeficiente de dispersão extremamente alto. Há muitas cidades com densidade demográfica baixa e poucas com esse valor muito alto, tal qual nas úlltimas análises.
 
-# 3.4 População estimada
+## 3.4 População estimada
 
 - Média: 25.080,24
 
@@ -60,7 +74,7 @@ Coeficiente de dispersão extremamente alto. Há muitas cidades com densidade de
 
 De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
-# 3.5 Escolarização
+## 3.5 Escolarização
 
 - Média: 98,99%
 
@@ -70,7 +84,7 @@ De forma similar à última análise, o coeficiente de variação é extremament
 
 O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior parte dos municípios em Minas possuem taxa de escolarização igual ou menor do que 99,29%. A média de valor menor indica que podem existir algumas cidades com essa taxa menor de forma mais discrepante, puxando a média para baixo.
 
-# 3.6 IDHM
+## 3.6 IDHM
 
 - Média: 0,67
 
@@ -80,7 +94,7 @@ O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior par
 
 Os valores de média e mediana iguais indicam que os dados se apresentam de forma simétrrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outrass variáveis, o IDHM se mantem relativamente estável.
 
-# 3.7 Mortalidade infantil
+## 3.7 Mortalidade infantil
 
 - Média: 18,66
 
@@ -90,7 +104,7 @@ Os valores de média e mediana iguais indicam que os dados se apresentam de form
 
 O alto coeficiente de variação indica que os dados são distribuídos de forma não homogênea. A média maior que a mediana indica assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo uma possível desigualdade.
 
-# 3.8 Receitas/Despesas brutas
+## 3.8 Receitas/Despesas brutas
 
 - Médias: 181mi/173mi
 
@@ -100,7 +114,7 @@ O alto coeficiente de variação indica que os dados são distribuídos de forma
 
 Valores indicam que existe uma distribuição extremamente desigual dos valores. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
 
-# 3.9 PIB per capita
+## 3.9 PIB per capita
 
 - Média: 34.487,09
 
@@ -109,3 +123,47 @@ Valores indicam que existe uma distribuição extremamente desigual dos valores.
 - Coeficiente de variação: 96,62%
 
 Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, alguma poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
+
+# 4. Análise dos gráficos de associação de variáveis
+
+Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, saúde, desenvolvimento humano e finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si.
+
+## 4.1 PIB per capita e escolarização
+
+Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%.
+
+Embora seja possível notar uma leve tendência positiva, ela não é suficientemente forte para indicar uma relação direta entre as variáveis. Isso sugere que a escolarização básica já está amplamente difundida entre os municípios mineiros, não dependendo exclusivamente do nível de riqueza local.
+
+Portanto, outros fatores, como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado.
+
+## 4.2 PIB per capita e mortalidade infantil
+
+Diferentemente do gráfico anterior, a relação entre PIB per capita e mortalidade infantil é mais evidente. Observa-se uma tendência de redução da mortalidade infantil conforme o PIB per capita aumenta.
+
+Esse comportamento sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis.
+
+Embora existam algumas exceções, o padrão geral indica uma associação negativa entre as variáveis, reforçando a importância das condições econômicas para os indicadores de saúde.
+
+## 4.3 IDHM e escolarização
+
+Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas.
+
+No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que indica que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
+
+De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente.
+
+## 4.4 Mortalidade infantil por faixa de IDHM
+
+boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta.
+
+As faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices. Essa diferença pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação.
+
+Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.
+
+## 4.5 Receitas e despesas municipais
+
+O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta, indicando que municípios que arrecadam mais também tendem a gastar mais.
+
+Esse resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município.
+
+Assim, o gráfico evidencia uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.

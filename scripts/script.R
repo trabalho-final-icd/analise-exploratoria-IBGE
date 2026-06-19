@@ -107,7 +107,7 @@ str(dados)
 summary(dados)
 str 
 
-<<<<<<< HEAD
+
 
 library(ggplot2)
 library(paletteer)
@@ -261,7 +261,6 @@ ggplot(
   ) +
   tema_trabalho
 
-=======
 #HÁGATA - medidas de resumo para variáveis numéricas
 numericas <- dados %>% select(where(is.numeric))
 #selecionando numéricas
@@ -401,4 +400,3 @@ tabela_extremos <- data.frame(
  
    #exibir
    print(tabela_extremos)
->>>>>>> 2c832626a41e3d29fcc031eec46b029a3de99606
