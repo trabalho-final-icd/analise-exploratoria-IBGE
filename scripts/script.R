@@ -2,7 +2,6 @@ library(readxl)
 library(dplyr)
 
 
-dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")
 
 dim(dados)
 names(dados)
@@ -400,3 +399,6 @@ tabela_extremos <- data.frame(
  
    #exibir
    print(tabela_extremos)
+
+   
+  
