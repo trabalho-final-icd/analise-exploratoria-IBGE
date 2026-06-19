@@ -398,5 +398,7 @@ tabela_extremos <- data.frame(
  tabela_extremos$Máximo <- format(round(tabela_extremos$Máximo, 2), 
      big.mark = ".", decimal.mark = ",")
  
-   #exibir
+   #exibir 
    print(tabela_extremos)
+   
+##Teste GEO
