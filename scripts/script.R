@@ -401,4 +401,34 @@ tabela_extremos <- data.frame(
    #exibir 
    print(tabela_extremos)
    
-##Teste GEO
+#Geo
+library(tidyr)
+library(purrr)
+   
+dadosnum <- names(dados)[sapply(dados, is.numeric)]
+ numlg <- dados %>%
+     select(all_of(dadosnum)) %>%
+     pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor")
+  
+#histograma
+ 
+  ggplot(numlg, aes(x = Valor)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    facet_wrap(~Variavel, scales = "free") +
+    labs( title = "Histogramas das Variáveis", 
+       x = "Valores", 
+       y = "Frequência") + tema_trabalho
+  
+#boxplot
+  ggplot(numlg, aes(y = Valor)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    facet_wrap(~Variavel, scales = "free") +
+    labs(title = "Boxplots das Variáveis", 
+      y = "Valores",
+      x = "") +
+    tema_trabalho +
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank()
+    )
+   
