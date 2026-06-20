@@ -22,9 +22,6 @@ source("../scripts/script.R")
 
 ```
 
-
-
-
 # 1. Introdução
 
 A análise de dados é uma ferramenta importante para compreender diferentes aspectos da realidade social, econômica e demográfica de uma região. A partir da exploração de indicadores estatísticos, é possível identificar padrões, comparar municípios e observar relações entre variáveis que ajudam a explicar fenômenos presentes na sociedade.
@@ -147,15 +144,15 @@ Essa análise corrobora com a última ao, através de um alto coeficiente de var
 
 # 4. Análise dos gráficos de associação de variáveis
 
-Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, à saúde, ao desenvolvimento humano e às finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si. 
+Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, à saúde, ao desenvolvimento humano e às finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si.
 
-Para realizar essa análise, além do recurso visual, é possível avaliar uma possível associação entre duas variáveis quantitativas (dados que expressam quantidades, medidas ou valores mensuráveis), por meio de três medidas de correlação. Em geral, essas medidas variam no intervalo de −1 a 1. Quando o valor da correlação é positivo, indica que, se uma delas aumenta, a tendência é que a outra também cresça e, da mesma forma, se uma diminui, a variável associada tende a decrescer. Por outro lado, caso essa medida seja negativa, a relação ocorre de modo que, se uma variável cresce, a outra tende a diminuir, e vice-versa. 
+Para realizar essa análise, além do recurso visual, é possível avaliar uma possível associação entre duas variáveis quantitativas (dados que expressam quantidades, medidas ou valores mensuráveis), por meio de três medidas de correlação. Em geral, essas medidas variam no intervalo de −1 a 1. Quando o valor da correlação é positivo, indica que, se uma delas aumenta, a tendência é que a outra também cresça e, da mesma forma, se uma diminui, a variável associada tende a decrescer. Por outro lado, caso essa medida seja negativa, a relação ocorre de modo que, se uma variável cresce, a outra tende a diminuir, e vice-versa.
 
-Ademais, se o valor de uma das medidas atingir números próximos de 1 ou de −1, indica a existência de uma forte correlação entre as variáveis observadas, isto é, há um relevante grau de dependência entre elas. Caso ela seja próxima de 0, existe uma relação fraca, a qual demonstra pouca associação entre as variáveis. 
+Ademais, se o valor de uma das medidas atingir números próximos de 1 ou de −1, indica a existência de uma forte correlação entre as variáveis observadas, isto é, há um relevante grau de dependência entre elas. Caso ela seja próxima de 0, existe uma relação fraca, a qual demonstra pouca associação entre as variáveis.
 
-Para cada tipo de medida, há uma situação a qual melhor se adequa utilizá-la. O Coeficiente de Pearson é normalmente indicado para associações lineares em que os dados não apresentam muita discrepância. Já os Coeficientes de Spearman e de Kendall são calculados a partir da ordenação dos valores em vez dos seus valores brutos, aceitando outliers. 
+Para cada tipo de medida, há uma situação a qual melhor se adequa utilizá-la. O Coeficiente de Pearson é normalmente indicado para associações lineares em que os dados não apresentam muita discrepância. Já os Coeficientes de Spearman e de Kendall são calculados a partir da ordenação dos valores em vez dos seus valores brutos, aceitando outliers.
 
-Em relação ao banco de dados analisado, é possível enxergar algumas correlações principais e criar conclusões acerca delas a partir de seus gráficos de dispersão e dos cálculos das medidas desses coeficientes. 
+Em relação ao banco de dados analisado, é possível enxergar algumas correlações principais e criar conclusões acerca delas a partir de seus gráficos de dispersão e dos cálculos das medidas desses coeficientes.
 
 ## 4.1 PIB per capita e escolarização
 
@@ -201,13 +198,13 @@ ggplot(
 
 ```
 
-Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%. 
+Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%.
 
-Embora seja possível notar uma leve tendência positiva, ela não é suficientemente forte para indicar uma relação direta entre as variáveis. Isso sugere que a escolarização básica já está amplamente difundida entre os municípios mineiros, não dependendo exclusivamente do nível de riqueza local. 
+Embora seja possível notar uma leve tendência positiva, ela não é suficientemente forte para indicar uma relação direta entre as variáveis. Isso sugere que a escolarização básica já está amplamente difundida entre os municípios mineiros, não dependendo exclusivamente do nível de riqueza local.
 
-Essa pouca variabilidade dos níveis de escolarização afeta relativamente os valores das medidas de correlação. Ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.0002215448, -0.1242779, -0.0837641, respectivamente. O sinal poderia sugerir uma associação negativa, mas a análise visual do gráfico comprova que, na realidade, a correlação é quase nula. Tais resultados se devem, porque como quase todas as cidades possuem a mesma taxa alta, a linha do gráfico fica constante e, qualquer cidade com PIB muito fora do normal (outlier), puxa o cálculo levemente para o lado negativo. 
+Essa pouca variabilidade dos níveis de escolarização afeta relativamente os valores das medidas de correlação. Ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.0002215448, -0.1242779, -0.0837641, respectivamente. O sinal poderia sugerir uma associação negativa, mas a análise visual do gráfico comprova que, na realidade, a correlação é quase nula. Tais resultados se devem, porque como quase todas as cidades possuem a mesma taxa alta, a linha do gráfico fica constante e, qualquer cidade com PIB muito fora do normal (outlier), puxa o cálculo levemente para o lado negativo.
 
-Portanto, conclui-se que as variáveis não possuem correlação real na prática, e que outros fatores como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado de altos índices. 
+Portanto, conclui-se que as variáveis não possuem correlação real na prática, e que outros fatores como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado de altos índices.
 
 ## 4.2 PIB per capita e mortalidade infantil
 
@@ -244,11 +241,11 @@ ggplot(
 
 ```
 
-Diferentemente do gráfico anterior, a relação entre PIB per capita e mortalidade infantil é mais evidente. Observa-se uma tendência de redução da mortalidade infantil conforme o PIB per capita aumenta. 
+Diferentemente do gráfico anterior, a relação entre PIB per capita e mortalidade infantil é mais evidente. Observa-se uma tendência de redução da mortalidade infantil conforme o PIB per capita aumenta.
 
-Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, de Spearman e de Kendall, em que se acham os valores -0.06703182, -0.2258377 e -0.1495825, respectivamente. Comparando os três, nota-se que o primeiro apresenta um resultado muito menor em relação aos outros dois porque o PIB possui uma quantidade de valores que variam muito entre si (outliers). Logo, torna-se mais adequado olhar para as duas últimas medidas (-0.2258377 e -0.1495825), as quais são negativas e demonstram que, conforme uma das variáveis cresce, a outra tende a diminuir. Ademais, como esses valores variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista. 
+Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, de Spearman e de Kendall, em que se acham os valores -0.06703182, -0.2258377 e -0.1495825, respectivamente. Comparando os três, nota-se que o primeiro apresenta um resultado muito menor em relação aos outros dois porque o PIB possui uma quantidade de valores que variam muito entre si (outliers). Logo, torna-se mais adequado olhar para as duas últimas medidas (-0.2258377 e -0.1495825), as quais são negativas e demonstram que, conforme uma das variáveis cresce, a outra tende a diminuir. Ademais, como esses valores variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.
 
-Tal percepção sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis, o que reforça a importância das condições econômicas para os indicadores de saúde. 
+Tal percepção sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis, o que reforça a importância das condições econômicas para os indicadores de saúde.
 
 ## 4.3 IDHM e escolarização
 
@@ -282,13 +279,13 @@ ggplot(
 
 ```
 
-Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas. 
+Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas.
 
-No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas. 
+No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
 
- Esse comportamento é muito semelhante ao observado no par anterior de PIB e escolarização. Tal comportamento afeta diretamente o valor das medidas de correlação, pois ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.01375387, -0.08892231, -0.05968151, respectivamente. O valor negativo se deve, pois como a escolarização permanece muito alta e concentrada independentemente do nível de IDHM do município, há algumas flutuações que puxam o valor para baixo, embora a correlação entre elas seja quase nula. São exemplos de municípios com IDHM menor, mas que conseguem registrar 100% de escolarização e de cidades com IDHM mais elevado apresentam taxas ligeiramente menores. 
+Esse comportamento é muito semelhante ao observado no par anterior de PIB e escolarização. Tal comportamento afeta diretamente o valor das medidas de correlação, pois ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.01375387, -0.08892231, -0.05968151, respectivamente. O valor negativo se deve, pois como a escolarização permanece muito alta e concentrada independentemente do nível de IDHM do município, há algumas flutuações que puxam o valor para baixo, embora a correlação entre elas seja quase nula. São exemplos de municípios com IDHM menor, mas que conseguem registrar 100% de escolarização e de cidades com IDHM mais elevado apresentam taxas ligeiramente menores.
 
-De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea. 
+De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea.
 
 ## 4.4 Mortalidade infantil por faixa de IDHM
 
@@ -330,11 +327,11 @@ ggplot(
 
 ```
 
-O gráfico de boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta. Em suma, as faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices.  
+O gráfico de boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta. Em suma, as faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices.
 
-Nesse contexto, o cálculo de correlações comprova tal comportamento ao resultar valores de Coeficientes de Pearson, Spearman e Kendall em -0.2375371, -0.3137683, -0.2105332, respectivamente. O valor negativo demonstra que enquanto uma variável cresce (IDH), há o decrescimento da outra (mortalidade). Além disso, é importante ressaltar que como esses resultados obtidos variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista. 
+Nesse contexto, o cálculo de correlações comprova tal comportamento ao resultar valores de Coeficientes de Pearson, Spearman e Kendall em -0.2375371, -0.3137683, -0.2105332, respectivamente. O valor negativo demonstra que enquanto uma variável cresce (IDH), há o decrescimento da outra (mortalidade). Além disso, é importante ressaltar que como esses resultados obtidos variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.
 
-Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população. 
+Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.
 
 ## 4.5 Receitas e despesas municipais
 
@@ -369,8 +366,8 @@ ggplot(
 
 ```
 
-O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta linear crescente, indicando que municípios que arrecadam mais também tendem a gastar mais. 
+O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta linear crescente, indicando que municípios que arrecadam mais também tendem a gastar mais.
 
-Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1. 
+Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1.
 
-É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais. 
+É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.
