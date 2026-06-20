@@ -2,7 +2,6 @@ library(readxl)
 library(dplyr)
 
 
-dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")
 
 dim(dados)
 names(dados)
@@ -586,3 +585,70 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
     scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
     labs(title = "Histograma PIB per Capita", x = "PIB per Capita (R$)", y = "Frequência") +
     tema_trabalho
+
+   library(dplyr)
+   
+   dados <- dados %>%
+     mutate(
+       z_pib = as.numeric(scale(pib_per_capita)),
+       z_idhm = as.numeric(scale(idhm)),
+       z_escolarizacao = as.numeric(scale(escolarizacao)),
+       z_mortalidade = -as.numeric(scale(mortalidade_infantil))
+     )
+   
+   dados <- dados %>%
+     mutate(
+       indice_desenvolvimento =
+         (z_pib +
+            z_idhm +
+            z_escolarizacao +
+            z_mortalidade) / 4
+     )
+   
+   dados_rank <- dados %>%
+     filter(!is.na(indice_desenvolvimento))
+   
+   ranking <- dados_rank %>%
+     arrange(desc(indice_desenvolvimento))
+   
+   top10 <- ranking %>%
+     select(municipio, indice_desenvolvimento) %>%
+     slice(1:10)
+   
+   dados_rank <- dados_rank %>%
+     mutate(
+       quartil_desenvolvimento =
+         ntile(indice_desenvolvimento, 4)
+     )
+   
+   dados_rank <- dados_rank %>%
+     mutate(
+       categoria_desenvolvimento =
+         case_when(
+           quartil_desenvolvimento == 1 ~ "Baixo",
+           quartil_desenvolvimento == 2 ~ "Médio-Baixo",
+           quartil_desenvolvimento == 3 ~ "Médio-Alto",
+           quartil_desenvolvimento == 4 ~ "Alto"
+         )
+     )
+   library(ggplot2)
+   
+   ggplot(top10,
+          aes(x = reorder(municipio,
+                          indice_desenvolvimento),
+              y = indice_desenvolvimento,
+              fill = indice_desenvolvimento)) +
+     geom_col() +
+     coord_flip() +
+     scale_fill_gradientn(colors = cores) +
+     labs(
+       title = "Top 10 Municípios Mais Desenvolvidos de Minas Gerais",
+       x = "Município",
+       y = "Índice de Desenvolvimento"
+     ) +
+     theme_minimal() +
+     theme(
+       legend.position = "none"
+     )
+   
+   

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Relatório</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="relatorio_files/libs/clipboard/clipboard.min.js"></script>
+<script src="relatorio_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="relatorio_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="relatorio_files/libs/quarto-html/popper.min.js"></script>
+<script src="relatorio_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="relatorio_files/libs/quarto-html/anchor.min.js"></script>
+<link href="relatorio_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="relatorio_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="relatorio_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="relatorio_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="relatorio_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Relatório</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introdução" class="level1">
+<h1>1. Introdução</h1>
+<p>A análise de dados é uma ferramenta importante para compreender diferentes aspectos da realidade social, econômica e demográfica de uma região. A partir da exploração de indicadores estatísticos, é possível identificar padrões, comparar municípios e observar relações entre variáveis que ajudam a explicar fenômenos presentes na sociedade.</p>
+<p>Neste trabalho, foi utilizada uma base de dados contendo informações de todos os municípios de Minas Gerais, reunindo indicadores relacionados à população, educação, saúde, desenvolvimento humano, finanças públicas e atividade econômica. A diversidade de informações disponíveis permite uma visão ampla das características dos municípios mineiros e de suas diferenças socioeconômicas.</p>
+<p>Inicialmente, foi realizada a leitura e o tratamento dos dados, com o objetivo de verificar a consistência das informações e preparar a base para as análises. Em seguida, foram elaboradas tabelas, medidas descritivas e representações gráficas para explorar o comportamento das variáveis selecionadas.</p>
+<p>Além da análise individual dos indicadores, também foram investigadas possíveis relações entre desenvolvimento humano, escolarização, mortalidade infantil, PIB per capita e finanças municipais. Dessa forma, busca-se compreender como diferentes aspectos da realidade socioeconômica dos municípios estão associados, contribuindo para uma interpretação mais ampla dos dados analisados.</p>
+</section>
+<section id="leitura-e-tratamento-dos-dados" class="level1">
+<h1>2. Leitura e tratamento dos dados</h1>
+<p>A base de dados foi importada para o R por meio da função read_xlsx() do pacote readxl. O conjunto de dados contém informações referentes aos 853 municípios do estado de Minas Gerais, abrangendo indicadores demográficos, sociais e econômicos.</p>
+<p>Inicialmente, foi realizada uma inspeção da estrutura da base utilizando as funções dim(), str() e summary(), com o objetivo de verificar a quantidade de observações, os tipos das variáveis e possíveis inconsistências. Em seguida, os nomes originais das variáveis foram simplificados para facilitar a manipulação e interpretação dos dados ao longo das análises.</p>
+<p>Durante a etapa de tratamento, observou-se que a variável de mortalidade infantil havia sido importada como texto devido à presença do símbolo “-”. Como não foi possível concluir se esse símbolo representava ausência de informação ou valor igual a zero, optou-se por convertê-lo para valores ausentes (NA). Posteriormente, a variável foi transformada para o tipo numérico.</p>
+<p>Também foi realizada a verificação de valores ausentes, de registros duplicados de municípios e de possíveis inconsistências nos dados. Para isso, foram analisados os intervalos das variáveis numéricas, verificando-se se os valores observados eram compatíveis com a natureza de cada indicador. Não foram identificados municípios duplicados nem valores incompatíveis com os limites esperados das variáveis.</p>
+<p>Após essas etapas, a base foi considerada adequada para a realização das análises descritivas, construções gráficas e estudos de associação apresentados nas seções seguintes.</p>
+<section id="tratamentos-adicionais-para-visualização-dos-dados" class="level2">
+<h2 class="anchored" data-anchor-id="tratamentos-adicionais-para-visualização-dos-dados">2.1 Tratamentos adicionais para visualização dos dados</h2>
+<p>Para a construção do gráfico de boxplot que relaciona mortalidade infantil e IDHM, foi criada uma variável auxiliar contendo faixas de IDHM. Essa categorização foi realizada a partir da divisão dos valores de IDHM em quartis, permitindo agrupar os municípios em níveis de desenvolvimento humano semelhantes e facilitar a comparação da distribuição da mortalidade infantil entre os grupos.</p>
+<p>Ressalta-se que essa transformação foi utilizada apenas para fins de visualização gráfica, não alterando os valores originais da variável IDHM presentes na base de dados.</p>
+</section>
+</section>
+<section id="medidas-de-resumo" class="level1">
+<h1>3. Medidas de resumo</h1>
+<section id="área-territorial" class="level2">
+<h2 class="anchored" data-anchor-id="área-territorial">3.1 Área territorial</h2>
+<ul>
+<li><p>Média: 687,59</p></li>
+<li><p>Mediana: 363,82</p></li>
+<li><p>Coeficiente de variação: 140,47%</p></li>
+</ul>
+<p>A área média maior que a mediana indica que a maior parte dos dados se concentram em valores mais baixos, ou seja, pode-se afirmar que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. O coeficiente de variação indica que esses valores possuem uma dispersão muito alta.</p>
+</section>
+<section id="população" class="level2">
+<h2 class="anchored" data-anchor-id="população">3.2 População</h2>
+<ul>
+<li><p>Média: 24.079,71</p></li>
+<li><p>Mediana: 8.048</p></li>
+<li><p>Coeficiente de variação: 391,84%</p></li>
+</ul>
+<p>O coeficiente de variação indica uma dispersão extremamente alta para os valores de população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana indica que metade das cidades de Minas possuem 8.048 cidadãos ou menos no momento observado. O a proporção da média 3 vezes maior do que a mediana condiz com o coeficiente de variação obtido.</p>
+</section>
+<section id="densidade-demográfica" class="level2">
+<h2 class="anchored" data-anchor-id="densidade-demográfica">3.3 Densidade demográfica</h2>
+<ul>
+<li><p>Média: 69,09</p></li>
+<li><p>Mediana: 22,09</p></li>
+<li><p>Coeficiente de variação: 455,11%</p></li>
+</ul>
+<p>Coeficiente de dispersão extremamente alto. Há muitas cidades com densidade demográfica baixa e poucas com esse valor muito alto, tal qual nas úlltimas análises.</p>
+</section>
+<section id="população-estimada" class="level2">
+<h2 class="anchored" data-anchor-id="população-estimada">3.4 População estimada</h2>
+<ul>
+<li><p>Média: 25.080,24</p></li>
+<li><p>Mediana: 8.237</p></li>
+<li><p>Coeficiente de variação: 393,82%</p></li>
+</ul>
+<p>De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.</p>
+</section>
+<section id="escolarização" class="level2">
+<h2 class="anchored" data-anchor-id="escolarização">3.5 Escolarização</h2>
+<ul>
+<li><p>Média: 98,99%</p></li>
+<li><p>Mediana: 99,29%</p></li>
+<li><p>Coeficiente de variação: 1,37%</p></li>
+</ul>
+<p>O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior parte dos municípios em Minas possuem taxa de escolarização igual ou menor do que 99,29%. A média de valor menor indica que podem existir algumas cidades com essa taxa menor de forma mais discrepante, puxando a média para baixo.</p>
+</section>
+<section id="idhm" class="level2">
+<h2 class="anchored" data-anchor-id="idhm">3.6 IDHM</h2>
+<ul>
+<li><p>Média: 0,67</p></li>
+<li><p>Mediana: 0,67</p></li>
+<li><p>Coeficiente de variação: 7,43%</p></li>
+</ul>
+<p>Os valores de média e mediana iguais indicam que os dados se apresentam de forma simétrrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outrass variáveis, o IDHM se mantem relativamente estável.</p>
+</section>
+<section id="mortalidade-infantil" class="level2">
+<h2 class="anchored" data-anchor-id="mortalidade-infantil">3.7 Mortalidade infantil</h2>
+<ul>
+<li><p>Média: 18,66</p></li>
+<li><p>Mediana: 14,51</p></li>
+<li><p>Coeficiente de variação: 73,58%</p></li>
+</ul>
+<p>O alto coeficiente de variação indica que os dados são distribuídos de forma não homogênea. A média maior que a mediana indica assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo uma possível desigualdade.</p>
+</section>
+<section id="receitasdespesas-brutas" class="level2">
+<h2 class="anchored" data-anchor-id="receitasdespesas-brutas">3.8 Receitas/Despesas brutas</h2>
+<ul>
+<li><p>Médias: 181mi/173mi</p></li>
+<li><p>Medianas: 56mi/52mi</p></li>
+<li><p>Coeficientes de variação: 468%/471%</p></li>
+</ul>
+<p>Valores indicam que existe uma distribuição extremamente desigual dos valores. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.</p>
+</section>
+<section id="pib-per-capita" class="level2">
+<h2 class="anchored" data-anchor-id="pib-per-capita">3.9 PIB per capita</h2>
+<ul>
+<li><p>Média: 34.487,09</p></li>
+<li><p>Mediana: 24.727,70</p></li>
+<li><p>Coeficiente de variação: 96,62%</p></li>
+</ul>
+<p>Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, alguma poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.</p>
+</section>
+</section>
+<section id="análise-dos-gráficos-de-associação-de-variáveis" class="level1">
+<h1>4. Análise dos gráficos de associação de variáveis</h1>
+<p>Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, à saúde, ao desenvolvimento humano e às finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si.&nbsp;</p>
+<p>Para realizar essa análise, além do recurso visual, é possível avaliar uma possível associação entre duas variáveis quantitativas (dados que expressam quantidades, medidas ou valores mensuráveis), por meio de três medidas de correlação. Em geral, essas medidas variam no intervalo de −1 a 1. Quando o valor da correlação é positivo, indica que, se uma delas aumenta, a tendência é que a outra também cresça e, da mesma forma, se uma diminui, a variável associada tende a decrescer. Por outro lado, caso essa medida seja negativa, a relação ocorre de modo que, se uma variável cresce, a outra tende a diminuir, e vice-versa.&nbsp;</p>
+<p>Ademais, se o valor de uma das medidas atingir números próximos de 1 ou de −1, indica a existência de uma forte correlação entre as variáveis observadas, isto é, há um relevante grau de dependência entre elas. Caso ela seja próxima de 0, existe uma relação fraca, a qual demonstra pouca associação entre as variáveis.&nbsp;</p>
+<p>Para cada tipo de medida, há uma situação a qual melhor se adequa utilizá-la. O Coeficiente de Pearson é normalmente indicado para associações lineares em que os dados não apresentam muita discrepância. Já os Coeficientes de Spearman e de Kendall são calculados a partir da ordenação dos valores em vez dos seus valores brutos, aceitando outliers.&nbsp;</p>
+<p>Em relação ao banco de dados analisado, é possível enxergar algumas correlações principais e criar conclusões acerca delas a partir de seus gráficos de dispersão e dos cálculos das medidas desses coeficientes.&nbsp;</p>
+<section id="pib-per-capita-e-escolarização" class="level2">
+<h2 class="anchored" data-anchor-id="pib-per-capita-e-escolarização">4.1 PIB per capita e escolarização</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%.&nbsp;</p>
+<p>Embora seja possível notar uma leve tendência positiva, ela não é suficientemente forte para indicar uma relação direta entre as variáveis. Isso sugere que a escolarização básica já está amplamente difundida entre os municípios mineiros, não dependendo exclusivamente do nível de riqueza local.&nbsp;</p>
+<p>Essa pouca variabilidade dos níveis de escolarização afeta relativamente os valores das medidas de correlação. Ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.0002215448, -0.1242779, -0.0837641, respectivamente. O sinal poderia sugerir uma associação negativa, mas a análise visual do gráfico comprova que, na realidade, a correlação é quase nula. Tais resultados se devem, porque como quase todas as cidades possuem a mesma taxa alta, a linha do gráfico fica constante e, qualquer cidade com PIB muito fora do normal (outlier), puxa o cálculo levemente para o lado negativo.&nbsp;</p>
+<p>Portanto, conclui-se que as variáveis não possuem correlação real na prática, e que outros fatores como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado de altos índices.&nbsp;</p>
+</section>
+<section id="pib-per-capita-e-mortalidade-infantil" class="level2">
+<h2 class="anchored" data-anchor-id="pib-per-capita-e-mortalidade-infantil">4.2 PIB per capita e mortalidade infantil</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Diferentemente do gráfico anterior, a relação entre PIB per capita e mortalidade infantil é mais evidente. Observa-se uma tendência de redução da mortalidade infantil conforme o PIB per capita aumenta.&nbsp;</p>
+<p>Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, de Spearman e de Kendall, em que se acham os valores -0.06703182, -0.2258377 e -0.1495825, respectivamente. Comparando os três, nota-se que o primeiro apresenta um resultado muito menor em relação aos outros dois porque o PIB possui uma quantidade de valores que variam muito entre si (outliers). Logo, torna-se mais adequado olhar para as duas últimas medidas (-0.2258377 e -0.1495825), as quais são negativas e demonstram que, conforme uma das variáveis cresce, a outra tende a diminuir. Ademais, como esses valores variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.&nbsp;</p>
+<p>Tal percepção sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis, o que reforça a importância das condições econômicas para os indicadores de saúde.&nbsp;</p>
+</section>
+<section id="idhm-e-escolarização" class="level2">
+<h2 class="anchored" data-anchor-id="idhm-e-escolarização">4.3 IDHM e escolarização</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas.&nbsp;</p>
+<p>No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.&nbsp;</p>
+<p>&nbsp;Esse comportamento é muito semelhante ao observado no par anterior de PIB e escolarização. Tal comportamento afeta diretamente o valor das medidas de correlação, pois ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.01375387, -0.08892231, -0.05968151, respectivamente. O valor negativo se deve, pois como a escolarização permanece muito alta e concentrada independentemente do nível de IDHM do município, há algumas flutuações que puxam o valor para baixo, embora a correlação entre elas seja quase nula. São exemplos de municípios com IDHM menor, mas que conseguem registrar 100% de escolarização e de cidades com IDHM mais elevado apresentam taxas ligeiramente menores.&nbsp;</p>
+<p>De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea.&nbsp;</p>
+</section>
+<section id="mortalidade-infantil-por-faixa-de-idhm" class="level2">
+<h2 class="anchored" data-anchor-id="mortalidade-infantil-por-faixa-de-idhm">4.4 Mortalidade infantil por faixa de IDHM</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>O gráfico de boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta. Em suma, as faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices.&nbsp;&nbsp;</p>
+<p>Nesse contexto, o cálculo de correlações comprova tal comportamento ao resultar valores de Coeficientes de Pearson, Spearman e Kendall em -0.2375371, -0.3137683, -0.2105332, respectivamente. O valor negativo demonstra que enquanto uma variável cresce (IDH), há o decrescimento da outra (mortalidade). Além disso, é importante ressaltar que como esses resultados obtidos variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.&nbsp;</p>
+<p>Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.&nbsp;</p>
+</section>
+<section id="receitas-e-despesas-municipais" class="level2">
+<h2 class="anchored" data-anchor-id="receitas-e-despesas-municipais">4.5 Receitas e despesas municipais</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="relatorio_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta linear crescente, indicando que municípios que arrecadam mais também tendem a gastar mais.&nbsp;</p>
+<p>Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1.&nbsp;</p>
+<p>É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.&nbsp;</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
