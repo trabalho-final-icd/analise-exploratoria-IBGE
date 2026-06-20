@@ -1,0 +1,98 @@
+---
+title: "Trabalho ICD mimimi"
+author: "Alice, Geovanna, Hagata, Livia"
+editor: visual
+format: 
+  revealjs:
+    slide-number: true
+    incremental: true
+execute:
+  echo: false
+  warning: false
+  message: false 
+---
+
+```{r}
+library(ggplot2)
+library(readxl)
+library(dplyr)
+dados <- read_xlsx("dados/BaseDadosIBGE_MG.xlsx")
+```
+
+# MIIIIIIIIII
+
+## meow
+
+mimimimimimimimi.
+
+- A média é mimimi.
+- O desvio padrão é mi <br>
+
+mi. 
+
+## Introdução
+
+- mimimi
+- yupi
+- mimimi
+
+------------------------------------------------------------------------
+
+## Banco de Dados
+
+- ibge
+- meow meow
+
+------------------------------------------------------------------------
+
+## Medidas de Resumo
+
+:::::: {.columns style="display: flex; justify-content: center; gap: 8%; align-items: center;"}
+
+::: {.column width="20%" style="background-color: #FFD1DC; padding: 45px 20px; border-radius: 10px; text-align: center;"}
+[**7.5**]{style="font-size: 80px; font-weight: bold; color: #D147A3;"}\
+[Meowdia]{style="font-size: 18px; display: block;"}
+:::
+
+::: {.column width="20%" style="background-color: #FFD1DC; padding: 45px 20px; border-radius: 10px; text-align: center;"}
+[**10**]{style="font-size: 80px; font-weight: bold; color: #D147A3;"}\
+[Meowdiana]{style="font-size: 18px; display: block;"}
+:::
+
+::: {.column width="20%" style="background-color: #FFD1DC; padding: 45px 20px; border-radius: 10px; text-align: center;"}
+[**12%**]{style="font-size: 80px; font-weight: bold; color: #D147A3;"}\
+[Coeficiente de Variação]{style="font-size: 18px; display: block;"}
+:::
+
+::::::
+
+<br>
+
+ter filho cedo não é feio, feio é cedo ter q filho assumindo pq foi tem
+
+rosa rosaa rosa ebaaaa textooooo
+
+------------------------------------------------------------------------
+
+## Análise Gráfica
+
+::::: columns
+::: {.column width="60%"}
+```{r}
+#| echo: false
+#| fig-align: "center"
+
+ggplot(mtcars, aes(x=wt, y=mpg)) + 
+  geom_point(color="#D147A3", size=3) + theme_minimal()
+
+```
+:::
+
+::: {.column width="40%"}
+Interpretação do Gráfico sempre espere no inesperado
+
+Ponto miomewo
+
+Ponto meow
+:::
+:::::
