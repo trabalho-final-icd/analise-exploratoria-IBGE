@@ -401,7 +401,7 @@ tabela_extremos <- data.frame(
    #exibir 
    print(tabela_extremos)
    
-#Geo
+#Geovanna linda
 library(tidyr)
 library(purrr)
    
@@ -409,9 +409,9 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
  numlg <- dados %>%
      select(all_of(dadosnum)) %>%
      pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor")
-  
-#histograma
- 
+
+#Gráficos de todas variáveis 
+#HISTOGRAMA
   ggplot(numlg, aes(x = Valor)) +
     geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
     facet_wrap(~Variavel, scales = "free") +
@@ -419,7 +419,7 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
        x = "Valores", 
        y = "Frequência") + tema_trabalho
   
-#boxplot
+#BOXPLOT
   ggplot(numlg, aes(y = Valor)) +
     geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
     facet_wrap(~Variavel, scales = "free") +
@@ -429,6 +429,160 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
     tema_trabalho +
     theme(
       axis.text.x = element_blank(),
-      axis.ticks.x = element_blank()
-    )
-   
+      axis.ticks.x = element_blank())
+#10 municipios  
+#FILTRAR
+  maiores_areas <- dados %>%
+    arrange(desc(area_territorial)) %>% 
+    slice_head(n = 10)                 
+  
+#GRÁFICO PIB PER CAPITA
+  ggplot(maiores_areas, aes(x = reorder(municipio, -pib_per_capita), y = pib_per_capita)) +
+    geom_col(fill = cores[2], color = "black", alpha = 0.8) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs( title = "PIB per Capita dos 10 Maiores Municípios em Área de MG",
+      x = "Município",
+      y = "PIB per Capita (R$)") + tema_trabalho +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+  
+##graficos isolados (boxplot)
+#ÁREA TERRITORIAL
+  ggplot(dados, aes(y = area_territorial)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot área Territorial (km²)", y = "Área Territorial", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#POPULAÇÃO
+  ggplot(dados, aes(y = populacao)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "População", y = "População (pessoas)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#DENSIDADE DEMOGRÁFICA
+  ggplot(dados, aes(y = densidade_demografica)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot Densidade Demográfica (hab/km²)", y = "Densidade Demográfica", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#POPULAÇÃO ESTIMADA
+  ggplot(dados, aes(y = populacao_estimada)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot População estimada", y = "População Estimada (Pessoas)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#ESCOLARIZAÇÃO
+  ggplot(dados, aes(y = escolarizacao)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "boxplot Taxa de Escolarização (6 a 14 anos)", y = "Escolarização (%)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#IDHM
+  ggplot(dados, aes(y = idhm)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot IDHM", y = "Índice de Desenvolvimento Humano Municipal", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#MORTALIDADE INFANTIL
+  ggplot(dados, aes(y = mortalidade_infantil)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot mortalidade infantil", y = "Óbitos por mil nascidos vivos", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#RECEITAS BRUTAS
+  ggplot(dados, aes(y = receitas_brutas)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplo Receitas Brutas", y = "Receitas (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#DESPESAS BRUTAS
+  ggplot(dados, aes(y = despesas_brutas)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot Despesas Brutas", y = "Despesas (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+#PIB PER CAPITA
+  ggplot(dados, aes(y = pib_per_capita)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot PIB per Capita", y = "PIB per Capita (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+##graficos isolados (boxplot)
+#ÁREA TERRITORIAL
+  ggplot(dados, aes(x = area_territorial)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Área Territorial (km²)", x = "Área Territorial", y = "Frequência") +
+    tema_trabalho
+  
+#POPULAÇÃO
+  ggplot(dados, aes(x = populacao)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma População", x = "População (Pessoas)", y = "Frequência") +
+    tema_trabalho
+  
+#DENSIDADE DEMOGRÁFICA
+  ggplot(dados, aes(x = densidade_demografica)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Densidade Demográfica (hab/km²)", x = "Densidade Demográfica", y = "Frequência") +
+    tema_trabalho
+  
+#POPULAÇAO ESTIMADA
+  ggplot(dados, aes(x = populacao_estimada)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma População Extimada", x = "População Estimada (Pessoas)", y = "Frequência") +
+    tema_trabalho
+  
+#ESCOLARIZAÇÃO
+  ggplot(dados, aes(x = escolarizacao)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Taxa de Escolarização (6 a 14 anos)", x = "Escolarização (%)", y = "Frequência") +
+    tema_trabalho
+  
+#IDHM 
+  ggplot(dados, aes(x = idhm)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma IDHM", x = "Índice de Desenvolvimento Humano Municipal", y = "Frequência") +
+    tema_trabalho
+  
+#MORTALIDADE INFANTIL
+  ggplot(dados, aes(x = mortalidade_infantil)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Mortalidade Infantil", x = "Óbitos por mil nascidos vivos", y = "Frequência") +
+    tema_trabalho
+  
+#RECEITA
+  ggplot(dados, aes(x = receitas_brutas)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Receitas Brutas", x = "Receitas (R$)", y = "Frequência") +
+    tema_trabalho
+  
+#DESPESAS BRUTAS
+  ggplot(dados, aes(x = despesas_brutas)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Despesas Brutas ", x = "Despesas (R$)", y = "Frequência") +
+    tema_trabalho
+  
+#PIB PR CAPITA 
+  ggplot(dados, aes(x = pib_per_capita)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma PIB per Capita", x = "PIB per Capita (R$)", y = "Frequência") +
+    tema_trabalho
