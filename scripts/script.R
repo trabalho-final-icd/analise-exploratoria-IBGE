@@ -401,7 +401,7 @@ tabela_extremos <- data.frame(
    #exibir 
    print(tabela_extremos)
    
-#Geovanna linda
+# --------------- geovanna linda --------------- <3
 library(tidyr)
 library(purrr)
    
