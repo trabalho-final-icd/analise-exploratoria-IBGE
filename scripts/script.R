@@ -105,13 +105,7 @@ min(dados$despesas_brutas)
 
 
 str(dados)
-
 summary(dados)
-str 
-
-
-
-
 
 
 cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
@@ -324,9 +318,9 @@ ggplot(top10,
     legend.position = "none"
   )
 
-#---------------  HÁGATA - medidas de resumo para variáveis numéricas
+# --------------- HÁGATA - medidas de resumo para variáveis numéricas
 numericas <- dados %>% select(where(is.numeric))
-#selecionando numéricas
+# selecionando numéricas
 
 estatisticas <- data.frame(
   Variavel = names(numericas),
@@ -335,11 +329,20 @@ estatisticas <- data.frame(
   Minimo = round(sapply(numericas, min, na.rm = TRUE), 2),
   Maximo = round(sapply(numericas, max, na.rm = TRUE), 2),
   DP = round(sapply(numericas, sd, na.rm = TRUE), 2),
-  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2))
-#calculando estatísticas
+  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2)
+)
+# calculando estatísticas
 print(estatisticas)
 write.csv(estatisticas, "estatisticas_descritivas.csv", row.names = FALSE)
-#exibir e salvar
+
+# CORREÇÃO AQUI: Filtrar apenas as 10 variáveis principais antes de calcular as médias
+colunas_principais <- c(
+  "area_territorial", "populacao", "densidade_demografica", 
+  "populacao_estimada", "escolarizacao", "idhm", 
+  "mortalidade_infantil", "receitas_brutas", "despesas_brutas", "pib_per_capita"
+)
+dados_principais <- numericas %>% select(all_of(colunas_principais))
+
 tabela_resumida <- data.frame(
   Variável = c(
     "Área Territorial (km²)",
@@ -354,13 +357,12 @@ tabela_resumida <- data.frame(
     "PIB per Capita (R$)"
   ),
   
-  Média = round(sapply(numericas, mean, na.rm = TRUE), 2),
-  Mediana = round(sapply(numericas, median, na.rm = TRUE), 2),
-  Mínimo = round(sapply(numericas, min, na.rm = TRUE), 2),
-  Máximo = round(sapply(numericas, max, na.rm = TRUE), 2),
-  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2)
+  Média = round(sapply(dados_principais, mean, na.rm = TRUE), 2),
+  Mediana = round(sapply(dados_principais, median, na.rm = TRUE), 2),
+  Mínimo = round(sapply(dados_principais, min, na.rm = TRUE), 2),
+  Máximo = round(sapply(dados_principais, max, na.rm = TRUE), 2),
+  CV = round(sapply(dados_principais, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2)
 )
-
 
 tabela_resumida$Média <- format(tabela_resumida$Média, big.mark = ".", decimal.mark = ",")
 tabela_resumida$Mediana <- format(tabela_resumida$Mediana, big.mark = ".", decimal.mark = ",")
@@ -368,7 +370,7 @@ tabela_resumida$Mínimo <- format(tabela_resumida$Mínimo, big.mark = ".", decim
 tabela_resumida$Máximo <- format(tabela_resumida$Máximo, big.mark = ".", decimal.mark = ",")
 
 print(tabela_resumida)
-#criando tabela resumida
+# criando tabela resumida
 
 encontrar_municipio <- function(df, var, tipo = "max") {
   df_clean <- df[!is.na(df[[var]]), ]
