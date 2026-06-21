@@ -9,8 +9,8 @@ echo: false
 warning: false
 message: false
 ---
-<div style="text-align: center;">
 
+::: {style="text-align: center;"}
 UNIVERSIDADE FEDERAL DE MINAS GERAIS
 
 Instituto de Ciências Exatas
@@ -40,8 +40,7 @@ Professor: Lourenço
 Belo Horizonte – MG
 
 2026
-
-</div>
+:::
 
 # 1. Introdução
 
@@ -56,6 +55,8 @@ library(readxl)
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(gt)
+library(knitr)
 
 dados <- read_xlsx("../dados/BaseDadosIBGE_MG.xlsx")
 source("../scripts/script.R")
@@ -173,17 +174,147 @@ Na primeira etapa, os recursos visuais utilizados foram o histograma (gráfico d
 ```{r}
 #| label: tabela 1
 
+library(dplyr)
+library(gt)
+
+numericas <- dados %>% select(where(is.numeric))
+
+estatisticas <- data.frame(
+  Variavel = names(numericas),
+  Media = round(sapply(numericas, mean, na.rm = TRUE), 2),
+  Mediana = round(sapply(numericas, median, na.rm = TRUE), 2),
+  Minimo = round(sapply(numericas, min, na.rm = TRUE), 2),
+  Maximo = round(sapply(numericas, max, na.rm = TRUE), 2),
+  DP = round(sapply(numericas, sd, na.rm = TRUE), 2),
+  CV = round(sapply(numericas, function(x) (sd(x, na.rm = TRUE) / mean(x, na.rm = TRUE)) * 100), 2)
+)
+
+# Filtrando só as 10 variáveis principais do relatório
+colunas_principais <- c(
+  "area_territorial", "populacao", "densidade_demografica",
+  "populacao_estimada", "escolarizacao", "idhm",
+  "mortalidade_infantil", "receitas_brutas", "despesas_brutas", "pib_per_capita"
+)
+
+nomes_bonitos <- c(
+  area_territorial = "Área Territorial (km²)",
+  populacao = "População (Censo 2022)",
+  densidade_demografica = "Densidade Demográfica (hab/km²)",
+  populacao_estimada = "População Estimada (2025)",
+  escolarizacao = "Escolarização 6-14 anos (%)",
+  idhm = "IDHM",
+  mortalidade_infantil = "Mortalidade Infantil (óbitos/1000)",
+  receitas_brutas = "Receitas Brutas (R$)",
+  despesas_brutas = "Despesas Brutas (R$)",
+  pib_per_capita = "PIB per Capita (R$)"
+)
+
+estatisticas_tab <- estatisticas %>%
+  filter(Variavel %in% colunas_principais) %>%
+  mutate(Variavel = nomes_bonitos[Variavel]) %>%
+  select(Variável = Variavel, Média = Media, Mediana, `CV (%)` = CV)
+
+gt(estatisticas_tab) %>%
+  tab_header(title = "Tabela 1: Medidas-resumo das variáveis") %>%
+  fmt_number(columns = where(is.numeric), decimals = 2, sep_mark = ".", dec_mark = ",") %>%
+  cols_align(align = "center", columns = where(is.numeric)) %>%
+  tab_options(
+    table.font.size = 13,
+    heading.title.font.size = 16,
+    column_labels.font.weight = "bold"
+  )
 ```
 
-Tabela 1
 
 ```{r}
 #| label: tabela 2
 
 
+tabela_extremos <- data.frame(
+     Variável = c(
+           "Área Territorial (km²)",
+           "População (Censo 2022)",
+           "Densidade Demográfica (hab/km²)",
+           "População Estimada (2025)",
+           "Escolarização 6-14 anos (%)",
+           "IDHM",
+           "Mortalidade Infantil (óbitos/1000)",
+           "Receitas Brutas (R$)",
+           "Despesas Brutas (R$)",
+           "PIB per Capita (R$)"
+        ),
+       
+        `Mínimo` = c(
+             min(dados$area_territorial, na.rm = TRUE),
+             min(dados$populacao, na.rm = TRUE),
+             min(dados$densidade_demografica, na.rm = TRUE),
+             min(dados$populacao_estimada, na.rm = TRUE),
+              min(dados$escolarizacao, na.rm = TRUE),
+              min(dados$idhm, na.rm = TRUE),
+              min(dados$mortalidade_infantil, na.rm = TRUE),
+             min(dados$receitas_brutas, na.rm = TRUE),
+             min(dados$despesas_brutas, na.rm = TRUE),
+              min(dados$pib_per_capita, na.rm = TRUE)
+         ),
+     
+       `Município (Mín)` = c(
+             encontrar_municipio(dados, "area_territorial", "min"),
+             encontrar_municipio(dados, "populacao", "min"),
+             encontrar_municipio(dados, "densidade_demografica", "min"),
+             encontrar_municipio(dados, "populacao_estimada", "min"),
+             encontrar_municipio(dados, "escolarizacao", "min"),
+            encontrar_municipio(dados, "idhm", "min"),
+             encontrar_municipio(dados, "mortalidade_infantil", "min"),
+             encontrar_municipio(dados, "receitas_brutas", "min"),
+             encontrar_municipio(dados, "despesas_brutas", "min"),
+              encontrar_municipio(dados, "pib_per_capita", "min")
+          ),
+      
+        `Máximo` = c(
+             max(dados$area_territorial, na.rm = TRUE),
+               max(dados$populacao, na.rm = TRUE),
+           max(dados$densidade_demografica, na.rm = TRUE),
+             max(dados$populacao_estimada, na.rm = TRUE),
+               max(dados$escolarizacao, na.rm = TRUE),
+               max(dados$idhm, na.rm = TRUE),
+               max(dados$mortalidade_infantil, na.rm = TRUE),
+               max(dados$receitas_brutas, na.rm = TRUE),
+               max(dados$despesas_brutas, na.rm = TRUE),
+               max(dados$pib_per_capita, na.rm = TRUE)
+           ),
+      
+         `Município (Máx)` = c(
+               encontrar_municipio(dados, "area_territorial", "max"),
+               encontrar_municipio(dados, "populacao", "max"),
+               encontrar_municipio(dados, "densidade_demografica", "max"),
+               encontrar_municipio(dados, "populacao_estimada", "max"),
+               encontrar_municipio(dados, "escolarizacao", "max"),
+               encontrar_municipio(dados, "idhm", "max"),
+               encontrar_municipio(dados, "mortalidade_infantil", "max"),
+               encontrar_municipio(dados, "receitas_brutas", "max"),
+               encontrar_municipio(dados, "despesas_brutas", "max"),
+               encontrar_municipio(dados, "pib_per_capita", "max")
+           )
+   )
+
+   
+   tabela_extremos$Mínimo <- format(round(tabela_extremos$Mínimo, 2), 
+    big.mark = ".", decimal.mark = ",")
+ tabela_extremos$Máximo <- format(round(tabela_extremos$Máximo, 2), 
+     big.mark = ".", decimal.mark = ",")
+ 
+  gt(tabela_extremos) %>%
+  tab_header(title = "Tabela 2: Valores mínimos e máximos por variável") %>%
+  cols_align(align = "center", columns = -Variável) %>%
+  tab_options(
+    table.font.size = 13,
+    heading.title.font.size = 16,
+    column_labels.font.weight = "bold"
+  )
+  
+   
 ```
 
-Tabela 2
 
 Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média, a mediana (valor que ocupa a posição central dos dados) e o coeficiente de variação (tabela 1). Este último indica o quanto os dados variam em relação à média, de modo que um valor baixo sinaliza pequena dispersão, enquanto um valor alto indica uma grande dispersão dos dados.Além disso, foi possível encontrar o máximo e mínimo de cada variável (tabela 2).
 
@@ -536,7 +667,9 @@ Coeficiente de variação: 96,62%
 
 Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, algumas poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
 
-# 5. Associação entre variáveis
+# 5. Análise descritiva relaciona aos municípios
+
+Embora a variável de municípios seja qualitativa (descreve características, atributos ou categorias que não podem ser medidas numericamente), não significa que ela não possa ser associada com as outras informações fornecidas no banco de dados. Nessa seção, foi realizada essa relação junto com as variáveis PIB per capta, IDHM, taxa de escolarização e mortalidade infantil.
 
 ## 5.1 PIB per capta dos 10 maiores municípios em área de MG
 
@@ -568,6 +701,24 @@ O gráfico evidencia uma desigualdade significativa do PIB per capta entre os ma
 #| label: top 10
 #| fig-cap: 
 #|   - "Figura 24: Gráfico de barras 10 municípios mais desenvolvidos de Minas Gerais"
+
+ggplot(top10,
+       aes(x = reorder(municipio,
+                       indice_desenvolvimento),
+           y = indice_desenvolvimento,
+           fill = indice_desenvolvimento)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_gradientn(colors = cores) +
+  labs(
+    title = "Top 10 Municípios Mais Desenvolvidos de Minas Gerais",
+    x = "Município",
+    y = "Índice de Desenvolvimento"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
 
 
 ```
@@ -620,6 +771,15 @@ ggplot(
 
 ```
 
+
+```{r}
+#| label: tabela 3
+
+kable(tabela_pib_escol, caption = "Tabela 3: PIB per capita x Escolarização")
+
+```
+
+
 Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%.
 
 Embora seja possível notar uma leve tendência positiva, ela não é suficientemente forte para indicar uma relação direta entre as variáveis. Isso sugere que a escolarização básica já está amplamente difundida entre os municípios mineiros, não dependendo exclusivamente do nível de riqueza local.
@@ -664,6 +824,13 @@ ggplot(
 
 ```
 
+
+```{r}
+#| label: tabela 4
+kable(tabela_pib_mort, caption = "Tabela 4: PIB per capita x Mortalidade Infantil")
+
+```
+
 Diferentemente do gráfico anterior, a relação entre PIB per capita e mortalidade infantil é mais evidente. Observa-se uma tendência de redução da mortalidade infantil conforme o PIB per capita aumenta.
 
 Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, de Spearman e de Kendall, em que se acham os valores -0.06703182, -0.2258377 e -0.1495825, respectivamente. Comparando os três, nota-se que o primeiro apresenta um resultado muito menor em relação aos outros dois porque o PIB possui uma quantidade de valores que variam muito entre si (outliers). Logo, torna-se mais adequado olhar para as duas últimas medidas (-0.2258377 e -0.1495825), as quais são negativas e demonstram que, conforme uma das variáveis cresce, a outra tende a diminuir. Ademais, como esses valores variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.
@@ -702,6 +869,13 @@ ggplot(
   tema_trabalho
 
 ```
+
+```{r}
+#| label: tabela 5
+kable(tabela_idh_escol, caption = "Tabela 5: IDHM x Escolarização")
+
+```
+
 
 Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas.
 
@@ -747,6 +921,13 @@ ggplot(
 
 ```
 
+```{r}
+#| label: tabela 6
+kable(tabela_idh_mort, caption = "Tabela 6: IDHM x Mortalidade Infantil")
+
+```
+
+
 O gráfico de boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta. Em suma, as faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices.
 
 Nesse contexto, o cálculo de correlações comprova tal comportamento ao resultar valores de Coeficientes de Pearson, Spearman e Kendall em -0.2375371, -0.3137683, -0.2105332, respectivamente. O valor negativo demonstra que enquanto uma variável cresce (IDH), há o decrescimento da outra (mortalidade). Além disso, é importante ressaltar que como esses resultados obtidos variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.
@@ -787,23 +968,29 @@ ggplot(
 
 ```
 
+```{r}
+#| label: tabela 7
+kable(tabela_desp_rec, caption = "Tabela 7: Despesas x Receitas Brutas")
+
+```
+
+
 O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta linear crescente, indicando que municípios que arrecadam mais também tendem a gastar mais.
 
 Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1.
 
 É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.
 
-### REFERÊNCIAS
+# REFERÊNCIAS
 
-### APÊNDICE A – Código utilizado na análise
+## APÊNDICE A – Código utilizado na análise
 
-````{r echo=FALSE, results='asis'}
+```{r echo=FALSE, results='asis'}
 cat(
   "```r\n",
   paste(readLines("../scripts/script.R"), collapse = "\n"),
   "\n```"
 )
-````
-
+```
 
 :::

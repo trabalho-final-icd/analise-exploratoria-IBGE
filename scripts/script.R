@@ -670,7 +670,64 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
     scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
     labs(title = "Histograma PIB per Capita", x = "PIB per Capita (R$)", y = "Frequência") +
     tema_trabalho
+  
 
-
-
-   
+  # ALICE
+  # Cálculo das correlações
+  
+  library(tidyverse)
+  library(vcd)
+  
+  
+  # PIB x Escolarização
+  pib_escol_pearson  <- cor(dados$pib_per_capita, dados$escolarizacao, method = "pearson")
+  pib_escol_spearman <- cor(dados$pib_per_capita, dados$escolarizacao, method = "spearman")
+  pib_escol_kendall  <- cor(dados$pib_per_capita, dados$escolarizacao, method = "kendall")
+  
+  # PIB x Mortalidade
+  pib_mort_pearson  <- cor(dados$pib_per_capita, dados$mortalidade_infantil, method = "pearson", use = "complete.obs")
+  pib_mort_spearman <- cor(dados$pib_per_capita, dados$mortalidade_infantil, method = "spearman", use = "complete.obs")
+  pib_mort_kendall  <- cor(dados$pib_per_capita, dados$mortalidade_infantil, method = "kendall", use = "complete.obs")
+  
+  # IDH x Escolarização
+  idh_escol_pearson  <- cor(dados$idhm, dados$escolarizacao, method = "pearson", use = "complete.obs")
+  idh_escol_spearman <- cor(dados$idhm, dados$escolarizacao, method = "spearman", use = "complete.obs")
+  idh_escol_kendall  <- cor(dados$idhm, dados$escolarizacao, method = "kendall", use = "complete.obs")
+  
+  # Mortalidade infantil x IDH
+  idh_mort_pearson  <- cor(dados$idhm, dados$mortalidade_infantil, method = "pearson", use = "complete.obs")
+  idh_mort_spearman <- cor(dados$idhm, dados$mortalidade_infantil, method = "spearman", use = "complete.obs")
+  idh_mort_kendall  <- cor(dados$idhm, dados$mortalidade_infantil, method = "kendall", use = "complete.obs")
+  
+  # Receitas x Despesas Municipais
+  desp_rec_pearson  <- cor(dados$despesas_brutas, dados$receitas_brutas, method = "pearson", use = "complete.obs")
+  desp_rec_spearman <- cor(dados$despesas_brutas, dados$receitas_brutas, method = "spearman", use = "complete.obs")
+  desp_rec_kendall  <- cor(dados$despesas_brutas, dados$receitas_brutas, method = "kendall", use = "complete.obs")
+  
+  # ---- Tabelas separadas ----
+  
+  tabela_pib_escol <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c(pib_escol_pearson, pib_escol_spearman, pib_escol_kendall), 3)
+  )
+  
+  tabela_pib_mort <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c(pib_mort_pearson, pib_mort_spearman, pib_mort_kendall), 3)
+  )
+  
+  tabela_idh_escol <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c(idh_escol_pearson, idh_escol_spearman, idh_escol_kendall), 3)
+  )
+  
+  tabela_idh_mort <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c(idh_mort_pearson, idh_mort_spearman, idh_mort_kendall), 3)
+  )
+  
+  tabela_desp_rec <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c(desp_rec_pearson, desp_rec_spearman, desp_rec_kendall), 3)
+  )
+  
