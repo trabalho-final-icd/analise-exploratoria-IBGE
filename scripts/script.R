@@ -1,14 +1,19 @@
-library(readxl)
+##BIBLIOTECAS
 library(dplyr)
-
-
+library(ggplot2)
+library(MetBrewer)
+library(paletteer)
+library(purrr)
+library(readxl)
+library(scales)
+library(tidyr)
 
 dim(dados)
 names(dados)
 str(dados)
 summary(dados)
 
-
+# --------------- LIVIA 
 dados <- dados %>%
   rename(
     municipio = `Município [-]`,
@@ -69,9 +74,7 @@ faltantes_finais <- data.frame(
   n_na = colSums(is.na(dados)),
   perc_na = round(
     colSums(is.na(dados)) / nrow(dados) * 100,
-    2
-  )
-)
+    2))
 
 faltantes_finais
 
@@ -108,10 +111,7 @@ str
 
 
 
-library(ggplot2)
-library(paletteer)
-library(MetBrewer)
-library(scales)
+
 
 
 cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
@@ -260,7 +260,71 @@ ggplot(
   ) +
   tema_trabalho
 
-#HÁGATA - medidas de resumo para variáveis numéricas
+
+dados <- dados %>%
+  mutate(
+    z_pib = as.numeric(scale(pib_per_capita)),
+    z_idhm = as.numeric(scale(idhm)),
+    z_escolarizacao = as.numeric(scale(escolarizacao)),
+    z_mortalidade = -as.numeric(scale(mortalidade_infantil))
+  )
+
+dados <- dados %>%
+  mutate(
+    indice_desenvolvimento =
+      (z_pib +
+         z_idhm +
+         z_escolarizacao +
+         z_mortalidade) / 4
+  )
+
+dados_rank <- dados %>%
+  filter(!is.na(indice_desenvolvimento))
+
+ranking <- dados_rank %>%
+  arrange(desc(indice_desenvolvimento))
+
+top10 <- ranking %>%
+  select(municipio, indice_desenvolvimento) %>%
+  slice(1:10)
+
+dados_rank <- dados_rank %>%
+  mutate(
+    quartil_desenvolvimento =
+      ntile(indice_desenvolvimento, 4)
+  )
+
+dados_rank <- dados_rank %>%
+  mutate(
+    categoria_desenvolvimento =
+      case_when(
+        quartil_desenvolvimento == 1 ~ "Baixo",
+        quartil_desenvolvimento == 2 ~ "Médio-Baixo",
+        quartil_desenvolvimento == 3 ~ "Médio-Alto",
+        quartil_desenvolvimento == 4 ~ "Alto"
+      )
+  )
+
+
+ggplot(top10,
+       aes(x = reorder(municipio,
+                       indice_desenvolvimento),
+           y = indice_desenvolvimento,
+           fill = indice_desenvolvimento)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_gradientn(colors = cores) +
+  labs(
+    title = "Top 10 Municípios Mais Desenvolvidos de Minas Gerais",
+    x = "Município",
+    y = "Índice de Desenvolvimento"
+  ) +
+  theme_minimal() +
+  theme(
+    legend.position = "none"
+  )
+
+#---------------  HÁGATA - medidas de resumo para variáveis numéricas
 numericas <- dados %>% select(where(is.numeric))
 #selecionando numéricas
 
@@ -401,8 +465,7 @@ tabela_extremos <- data.frame(
    print(tabela_extremos)
    
 # --------------- geovanna linda --------------- <3
-library(tidyr)
-library(purrr)
+
    
 dadosnum <- names(dados)[sapply(dados, is.numeric)]
  numlg <- dados %>%
@@ -586,69 +649,6 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
     labs(title = "Histograma PIB per Capita", x = "PIB per Capita (R$)", y = "Frequência") +
     tema_trabalho
 
-   library(dplyr)
-   
-   dados <- dados %>%
-     mutate(
-       z_pib = as.numeric(scale(pib_per_capita)),
-       z_idhm = as.numeric(scale(idhm)),
-       z_escolarizacao = as.numeric(scale(escolarizacao)),
-       z_mortalidade = -as.numeric(scale(mortalidade_infantil))
-     )
-   
-   dados <- dados %>%
-     mutate(
-       indice_desenvolvimento =
-         (z_pib +
-            z_idhm +
-            z_escolarizacao +
-            z_mortalidade) / 4
-     )
-   
-   dados_rank <- dados %>%
-     filter(!is.na(indice_desenvolvimento))
-   
-   ranking <- dados_rank %>%
-     arrange(desc(indice_desenvolvimento))
-   
-   top10 <- ranking %>%
-     select(municipio, indice_desenvolvimento) %>%
-     slice(1:10)
-   
-   dados_rank <- dados_rank %>%
-     mutate(
-       quartil_desenvolvimento =
-         ntile(indice_desenvolvimento, 4)
-     )
-   
-   dados_rank <- dados_rank %>%
-     mutate(
-       categoria_desenvolvimento =
-         case_when(
-           quartil_desenvolvimento == 1 ~ "Baixo",
-           quartil_desenvolvimento == 2 ~ "Médio-Baixo",
-           quartil_desenvolvimento == 3 ~ "Médio-Alto",
-           quartil_desenvolvimento == 4 ~ "Alto"
-         )
-     )
-   library(ggplot2)
-   
-   ggplot(top10,
-          aes(x = reorder(municipio,
-                          indice_desenvolvimento),
-              y = indice_desenvolvimento,
-              fill = indice_desenvolvimento)) +
-     geom_col() +
-     coord_flip() +
-     scale_fill_gradientn(colors = cores) +
-     labs(
-       title = "Top 10 Municípios Mais Desenvolvidos de Minas Gerais",
-       x = "Município",
-       y = "Índice de Desenvolvimento"
-     ) +
-     theme_minimal() +
-     theme(
-       legend.position = "none"
-     )
-   
+
+
    
