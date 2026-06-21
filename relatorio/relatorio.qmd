@@ -9,8 +9,8 @@ echo: false
 warning: false
 message: false
 ---
+<div style="text-align: center;">
 
-::: {align="center"}
 UNIVERSIDADE FEDERAL DE MINAS GERAIS
 
 Instituto de Ciências Exatas
@@ -37,10 +37,13 @@ Miranda Hágata
 
 Professor: Lourenço
 
-Belo Horizonte – MG 2026
-:::
+Belo Horizonte – MG
 
-### 1. Introdução
+2026
+
+</div>
+
+# 1. Introdução
 
 ```{r}
 #| label: bibliotecas
@@ -75,13 +78,13 @@ A análise de dados é uma ferramenta importante para compreender diferentes asp
 
 Neste trabalho, foi utilizada uma base de dados com informações dos municípios de Minas Gerais, contendo indicadores de população, educação, saúde, desenvolvimento humano, finanças públicas e atividade econômica. Esses dados permitem caracterizar os municípios e observar diferenças socioeconômicas entre eles. A partir dessa base, são realizadas análises exploratórias para descrever o comportamento das variáveis e investigar possíveis relações entre os indicadores selecionados.
 
-### 2. Objetivos
+# 2. Objetivos
 
-**2.1 Objetivo geral**
+## 2.1 Objetivo geral
 
 Realizar uma análise exploratória dos dados dos municípios de Minas Gerais, visando descrever a distribuição dos principais indicadores socioeconômicos e investigar possíveis relações entre eles.
 
-**2.2 Objetivos específicos**
+## 2.2 Objetivos específicos
 
 - Realizar a leitura e o tratamento da base de dados;
 
@@ -95,9 +98,9 @@ Realizar uma análise exploratória dos dados dos municípios de Minas Gerais, v
 
 - Calcular e interpretar coeficientes de correlação.
 
-### 3. Metodologia
+# 3. Metodologia
 
-**3.1 Leitura e tratamento dos dados**
+## 3.1 Leitura e tratamento dos dados
 
 A base de dados foi importada para o R por meio da função read_xlsx() do pacote readxl. O conjunto de dados contém informações referentes aos 853 municípios do estado de Minas Gerais, abrangendo indicadores demográficos, sociais e econômicos.
 
@@ -109,7 +112,7 @@ Também foi realizada a verificação de valores ausentes, de registros duplicad
 
 Após essas etapas, a base foi considerada adequada para a realização das análises descritivas, construções gráficas e estudos de associação apresentados nas seções seguintes.
 
-**3.2 Tratamentos para visualização**
+## 3.2 Tratamentos para visualização
 
 Para a construção dos gráficos exploratórios, a base foi transformada para o formato longo. Inicialmente, foram selecionadas apenas as variáveis numéricas da base com select(all_of(dadosnum)).
 
@@ -117,7 +120,7 @@ Em seguida, foi aplicada a função pivot_longer(), reorganizando as variáveis 
 
 Para o boxplot entre mortalidade infantil e IDHM, foi criada uma variável categórica com base nos quartis do IDHM, utilizada apenas para fins de visualização, sem alteração dos valores originais.
 
-### 4. Análise das variáveis
+# 4. Análise das variáveis
 
 ```{r}
 #| label: ajustes
@@ -132,7 +135,7 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
 
 ```
 
-O comportamento de cada variável numérica foi analisado por meio de recursos gráficos e de um resumo estatístico dos dados. 
+O comportamento de cada variável numérica foi analisado por meio de recursos gráficos e de um resumo estatístico dos dados.
 
 ```{r}
 #| label: Histograma
@@ -165,7 +168,7 @@ ggplot(numlg, aes(x = Valor)) +
       axis.ticks.x = element_blank())
 ```
 
-Na primeira etapa, os recursos visuais utilizados foram o histograma (gráfico de barras que representa a distribuição de frequências de dados contínuos) e o boxplot (diagrama de caixas). A partir deles, é possível observar a variação de frequência de cada variável e visualizar a discrepância entre os dados, o que facilita a identificação de possíveis valores atípicos chamados de outliers. 
+Na primeira etapa, os recursos visuais utilizados foram o histograma (gráfico de barras que representa a distribuição de frequências de dados contínuos) e o boxplot (diagrama de caixas). A partir deles, é possível observar a variação de frequência de cada variável e visualizar a discrepância entre os dados, o que facilita a identificação de possíveis valores atípicos chamados de outliers.
 
 ```{r}
 #| label: tabela 1
@@ -182,9 +185,9 @@ Tabela 1
 
 Tabela 2
 
-Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média, a mediana (valor que ocupa a posição central dos dados) e o coeficiente de variação (tabela 1). Este último indica o quanto os dados variam em relação à média, de modo que um valor baixo sinaliza pequena dispersão, enquanto um valor alto indica uma grande dispersão dos dados. Além disso, foi possível encontrar o máximo e mínimo de cada variável (tabela 2). 
+Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média, a mediana (valor que ocupa a posição central dos dados) e o coeficiente de variação (tabela 1). Este último indica o quanto os dados variam em relação à média, de modo que um valor baixo sinaliza pequena dispersão, enquanto um valor alto indica uma grande dispersão dos dados.Além disso, foi possível encontrar o máximo e mínimo de cada variável (tabela 2).
 
-**4.1 Área territorial**
+## 4.1 Área territorial
 
 ```{r}
 #| label: area
@@ -221,7 +224,7 @@ Coeficiente de variação: 140,47%
 
 Como a área média é maior que a mediana, é possível concluir que a maior parte dos dados se concentram em valores mais baixos, o que conclui novamente que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. Além disso, nota-se que coeficiente de variação indica que esses valores possuem uma dispersão muito alta em relação à média, reforçando a grande heterogeneidade do estado.
 
-**4.2 População**
+## 4.2 População
 
 ```{r}
 #| label: populacao
@@ -258,7 +261,7 @@ Coeficiente de variação: 391,84%
 
 O coeficiente de variação indica uma dispersão extremamente alta para os valores da população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana (proporção de três vezes mais) indica que metade das cidades de Minas possui 8.048 cidadãos ou menos no momento observado.
 
-**4.3 Densidade demográfica**
+## 4.3 Densidade demográfica
 
 ```{r}
 #| label: demo
@@ -295,7 +298,7 @@ Coeficiente de variação: 455,11%
 
 De forma semelhante à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
-**4.4 População estimada**
+## 4.4 População estimada
 
 ```{r}
 #| label: populacao estimada
@@ -326,7 +329,7 @@ Esse comportamento é completamente coerente com o cálculo das medidas de resum
 
 De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
-**4.5 Escolarização**
+## 4.5 Escolarização
 
 ```{r}
 #| label: escolarizacao
@@ -363,7 +366,7 @@ Coeficiente de variação: 1,37%
 
 O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior parte dos municípios em Minas possuem taxa de escolarização igual ou menor do que 99,29%. A média de valor menor indica que podem existir algumas cidades com essa taxa menor de forma mais discrepante, puxando a média para baixo.
 
-**4.6 IDHM**
+## 4.6 IDHM
 
 ```{r}
 #| label: idhm
@@ -400,7 +403,7 @@ Coeficiente de variação: 7,43%
 
 Os valores de média e mediana iguais confirmam que os dados se apresentam de forma simétrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outras variáveis, o IDHM se mantem relativamente estável.
 
-**4.7 Mortalidade infantil**
+## 4.7 Mortalidade infantil
 
 ```{r}
 #| label: mortalidade
@@ -437,7 +440,7 @@ Coeficiente de variação: 73,58%
 
 O alto coeficiente de variação confirma que os dados são distribuídos de forma não homogênea. A média maior que a mediana reforça assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo essa desigualdade.
 
-**4.8 Receitas/Despesas brutas**
+## 4.8 Receitas/Despesas brutas
 
 ```{r}
 #| label: receitas
@@ -496,7 +499,7 @@ Coeficientes de variação: 468%/471%
 
 Esses valores reforçam que existe uma distribuição extremamente desigual do orçamento mineiro. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
 
-**4.9 PIB per capita**
+## 4.9 PIB per capita
 
 ```{r}
 #| label: PIB
@@ -533,9 +536,9 @@ Coeficiente de variação: 96,62%
 
 Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, algumas poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
 
-### 5.
+# 5. Associação entre variáveis
 
-**5.1 PIB per capta dos 10 maiores municípios em área de MG**
+## 5.1 PIB per capta dos 10 maiores municípios em área de MG
 
 ```{r}
 #| label: PIB 10
@@ -559,7 +562,7 @@ Essa análise corrobora com a última ao, através de um alto coeficiente de var
 
 O gráfico evidencia uma desigualdade significativa do PIB per capta entre os maiores municípios mineiros em extensão territorial de Minas Gerais. É perceptível que Paracatu, Uberlândia e Uberaba apresentam uma economia mais influente, mas municípios como Arinos e, principalmente, Januária possuem um valor de PIB inferior, indicando diferenças importantes no nível de atividade econômica e produtividade local.
 
-**5.2 Top 10 municípios mais desenvolvidos de Minas Gerais**
+## 5.2 Top 10 municípios mais desenvolvidos de Minas Gerais
 
 ```{r}
 #| label: top 10
@@ -571,7 +574,7 @@ O gráfico evidencia uma desigualdade significativa do PIB per capta entre os ma
 
 O gráfico foi construído a partir de um índice de desenvolvimento criado pela média de quatro indicadores: PIB per capita, IDHM, taxa de escolarização e mortalidade infantil. Inicialmente, todas as variáveis foram padronizadas por meio do escore-z, permitindo que indicadores com escalas diferentes pudessem ser comparados. No caso da mortalidade infantil, o sinal foi invertido para que menores taxas contribuíssem positivamente para o índice. Em seguida, foi calculada a média desses indicadores padronizados, gerando um índice único para cada município. Por fim, os municípios foram ordenados de forma decrescente e os dez maiores valores foram selecionados para compor o gráfico.
 
-### 6. Análise dos gráficos de associação de variáveis
+# 6. Análise dos gráficos de associação de variáveis
 
 Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, à saúde, ao desenvolvimento humano e às finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si.
 
@@ -583,12 +586,12 @@ Para cada tipo de medida, há uma situação a qual melhor se adequa utilizá-la
 
 Em relação ao banco de dados analisado, é possível enxergar algumas correlações principais e criar conclusões acerca delas a partir de seus gráficos de dispersão e dos cálculos das medidas desses coeficientes.
 
-**6.1 PIB per capita e escolarização**
+## 6.1 PIB per capita e escolarização
 
 ```{r}
 #| label: pib esco
 #| fig-cap: 
-#| - "Figura 25: Gráfico de ?? PIB per capita e escolarização"
+#| - "Figura 25: Gráfico de dispersão PIB per capita e escolarização"
 
 
 
@@ -625,12 +628,12 @@ Essa pouca variabilidade dos níveis de escolarização afeta relativamente os v
 
 Portanto, conclui-se que as variáveis não possuem correlação real na prática, e que outros fatores como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado de altos índices.
 
-**6.2 PIB per capita e mortalidade infantil**
+## 6.2 PIB per capita e mortalidade infantil
 
 ```{r}
 #| label: pib mort
 #| fig-cap: 
-#| - "Figura 26: Gráfico de ?? PIB per capita e mortalidade infantil"
+#| - "Figura 26: Gráfico de dispersão de PIB per capita e mortalidade infantil"
 
 ggplot(
   dados,
@@ -667,12 +670,12 @@ Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, d
 
 Tal percepção sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis, o que reforça a importância das condições econômicas para os indicadores de saúde.
 
-**6.3 IDHM e escolarização**
+## 6.3 IDHM e escolarização
 
 ```{r}
 #| label: idhm esco
 #| fig-cap: 
-#| - "Figura 27: Gráfico de ?? IDHM e escolarização"
+#| - "Figura 27: Gráfico de gráfico de dispersão com reta de regressão linear de IDHM e escolarização"
 
 ggplot(
   dados,
@@ -704,12 +707,12 @@ Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa
 
 No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
 
-**6.4 Mortalidade infantil por faixa de IDHM**
+## 6.4 Mortalidade infantil por faixa de IDHM
 
 ```{r}
 #| label: mort idhm
 #| fig-cap: 
-#| - "Figura 28: Gráfico de ?? Mortalidade infantil por faixa de IDHM"
+#| - "Figura 28: Gráfico boxplot de Mortalidade infantil por faixa de IDHM"
 
 dados$faixa_idhm <- cut(
   dados$idhm,
@@ -750,12 +753,12 @@ Nesse contexto, o cálculo de correlações comprova tal comportamento ao result
 
 Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.
 
-**6.5 Receitas e despesas municipais**
+## 6.5 Receitas e despesas municipais
 
 ```{r}
 #| label: recet desp
 #| fig-cap: 
-#| - "Figura 29: Gráfico de ?? Receitas e despesas municipais"
+#| - "Figura 29: Gráfico de gráfico de dispersão com escala logarítmica de Receitas e despesas municipais"
 
 ggplot(
   dados,
@@ -792,4 +795,15 @@ Esse destaque significativo é igualmente visto nas medidas de correlação, de 
 
 ### REFERÊNCIAS
 
-### APÊNDICE A
+### APÊNDICE A – Código utilizado na análise
+
+````{r echo=FALSE, results='asis'}
+cat(
+  "```r\n",
+  paste(readLines("../scripts/script.R"), collapse = "\n"),
+  "\n```"
+)
+````
+
+
+:::

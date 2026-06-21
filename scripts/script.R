@@ -8,12 +8,16 @@ library(readxl)
 library(scales)
 library(tidyr)
 
+# Exploração inicial da base.
+
 dim(dados)
 names(dados)
 str(dados)
 summary(dados)
 
 # --------------- LIVIA 
+
+# Renomeação das variáveis.
 dados <- dados %>%
   rename(
     municipio = `Município [-]`,
@@ -31,9 +35,11 @@ dados <- dados %>%
 
 names(dados)
 
-
+# Verificação de valores ausentes.
 
 colSums(is.na(dados))
+
+# Resumo dos valores ausentes.
 
 faltantes <- data.frame(
   variavel = names(dados),
@@ -47,8 +53,11 @@ faltantes <- data.frame(
 faltantes
 
 
+# Identificação de registros inválidos.
 
 sum(dados$mortalidade_infantil == "-")
+
+# Tratamento de valores ausentes.
 
 dados <- dados %>%
   mutate(
@@ -57,7 +66,7 @@ dados <- dados %>%
       "-"
     )
   )
-
+# Conversão para formato numérico.
 dados <- dados %>%
   mutate(
     mortalidade_infantil =
@@ -79,10 +88,11 @@ faltantes_finais <- data.frame(
 faltantes_finais
 
 
-
+# Verificação de duplicidades.
 sum(duplicated(dados$municipio))
 
 
+# Verificação de valores extremos.
 
 range(dados$idhm, na.rm = TRUE)
 
@@ -103,10 +113,11 @@ min(dados$receitas_brutas)
 min(dados$despesas_brutas)
 
 
-
+# Resumo da base tratada.
 str(dados)
 summary(dados)
 
+# Definição de cores e tema gráfico.
 
 cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
 
@@ -119,6 +130,8 @@ tema_trabalho <- theme_minimal() +
     ),
     axis.title = element_text(face = "bold")
   )
+
+# Relação entre PIB e escolarização.
 
 ggplot(
   dados,
@@ -142,6 +155,7 @@ ggplot(
   ) +
   tema_trabalho
 
+# Relação entre PIB e mortalidade infantil.
 
 ggplot(
   dados,
@@ -169,7 +183,7 @@ ggplot(
     y = "Mortalidade Infantil"
   ) +
   tema_trabalho
-
+# Relação entre IDHM e escolarização.
 
 ggplot(
   dados,
@@ -195,7 +209,7 @@ ggplot(
   ) +
   tema_trabalho
 
-
+# Criação das faixas de IDHM.
 
 dados$faixa_idhm <- cut(
   dados$idhm,
@@ -207,7 +221,7 @@ dados$faixa_idhm <- cut(
   include.lowest = TRUE
 )
 
-
+# Mortalidade por faixa de IDHM.
 ggplot(
   dados,
   aes(
@@ -228,6 +242,7 @@ ggplot(
     legend.position = "none"
   )
 
+# Relação entre receitas e despesas.
 
 ggplot(
   dados,
@@ -254,6 +269,7 @@ ggplot(
   ) +
   tema_trabalho
 
+# Padronização das variáveis.
 
 dados <- dados %>%
   mutate(
@@ -263,6 +279,7 @@ dados <- dados %>%
     z_mortalidade = -as.numeric(scale(mortalidade_infantil))
   )
 
+# Construção do índice de desenvolvimento.
 dados <- dados %>%
   mutate(
     indice_desenvolvimento =
@@ -272,9 +289,11 @@ dados <- dados %>%
          z_mortalidade) / 4
   )
 
+# Remoção de valores ausentes.
 dados_rank <- dados %>%
   filter(!is.na(indice_desenvolvimento))
 
+# Criação do ranking.
 ranking <- dados_rank %>%
   arrange(desc(indice_desenvolvimento))
 
@@ -287,6 +306,7 @@ dados_rank <- dados_rank %>%
     quartil_desenvolvimento =
       ntile(indice_desenvolvimento, 4)
   )
+# Classificação dos níveis de desenvolvimento.
 
 dados_rank <- dados_rank %>%
   mutate(
@@ -299,7 +319,7 @@ dados_rank <- dados_rank %>%
       )
   )
 
-
+# Ranking dos municípios mais desenvolvidos.
 ggplot(top10,
        aes(x = reorder(municipio,
                        indice_desenvolvimento),
