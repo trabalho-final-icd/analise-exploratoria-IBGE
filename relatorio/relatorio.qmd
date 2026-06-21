@@ -1,12 +1,44 @@
 ---
-title: "Relatório"
-format: html
+title: " "
+format: 
+  html:
+    lightbox: true
 embed-resources: true
 editor: visual
 echo: false
 warning: false
 message: false
 ---
+
+::: {align="center"}
+UNIVERSIDADE FEDERAL DE MINAS GERAIS
+
+Instituto de Ciências Exatas
+
+Bacharelado em Estatística
+
+Introdução à Ciência de Dados
+
+<br><br><br>
+
+**ANÁLISE EXPLORATÓRIA DE DADOS DOS MUNICÍPIOS DE MINAS GERAIS**
+
+<br><br><br><br>
+
+Alice de Oliveira Paulino
+
+Geovanna Silva Lacerda
+
+Lívia Neves
+
+Miranda Hágata
+
+<br><br><br><br><br>
+
+Professor: Lourenço
+
+Belo Horizonte – MG 2026
+:::
 
 ### 1. Introdução
 
@@ -102,6 +134,37 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
 
 O comportamento de cada variável numérica foi analisado por meio de recursos gráficos e de um resumo estatístico dos dados. 
 
+```{r}
+#| label: Histograma
+#| fig-cap: 
+#|   - "Figura 1: Histograma de todas as variáveis"
+
+ggplot(numlg, aes(x = Valor)) +
+  geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+  facet_wrap(~Variavel, scales = "free") +
+  labs( title = "Histogramas das Variáveis", 
+        x = "Valores", 
+        y = "Frequência") + tema_trabalho
+
+```
+
+```{r}
+#| label: boxplot
+#|fig-cap: 
+#| - "Figura 2: Boxplot de todas as variáveis"
+
+ ggplot(numlg, aes(y = Valor)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    facet_wrap(~Variavel, scales = "free") +
+    labs(title = "Boxplots das Variáveis", 
+      y = "Valores",
+      x = "") +
+    tema_trabalho +
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank())
+```
+
 Na primeira etapa, os recursos visuais utilizados foram o histograma (gráfico de barras que representa a distribuição de frequências de dados contínuos) e o boxplot (diagrama de caixas). A partir deles, é possível observar a variação de frequência de cada variável e visualizar a discrepância entre os dados, o que facilita a identificação de possíveis valores atípicos chamados de outliers. 
 
 ```{r}
@@ -124,10 +187,10 @@ Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média
 **4.1 Área territorial**
 
 ```{r}
-#| label: fig-graficos
+#| label: area
 #| fig-cap: 
-#|   - "Histograma área territorial"
-#|   - "Boxplot área territorial"
+#|   - "Figura 3: Histograma área territorial"
+#|   - "Figura 4: Boxplot área territorial"
 #| layout-ncol: 2
 
  ggplot(dados, aes(x = area_territorial)) +
@@ -160,6 +223,27 @@ Como a área média é maior que a mediana, é possível concluir que a maior pa
 
 **4.2 População**
 
+```{r}
+#| label: populacao
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 5: Histograma população"
+#|   - "Figura 6: Boxplot população"
+ 
+  ggplot(dados, aes(x = populacao)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma População", x = "População (Pessoas)", y = "Frequência") +
+    tema_trabalho
+  
+ggplot(dados, aes(y = populacao)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "População", y = "População (pessoas)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
+
 O gráfico de histograma deixa evidente que há uma maior concentração de população nas faixas iniciais. Isso significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a demografia do estado, que é composta principalmente por muitos municípios com populações muito pequenas.
 
 Ademais, é notório como o gráfico de boxplot reforça essa concentração extrema de dados a partir de uma caixa completamente achatada na base do gráfico, a qual demonstra onde a maior parte dos valores está. Além do mais, o boxplot torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina. A título de curiosidade, o ponto mais isolado no topo do gráfico que ultrapassa a marca de 2 milhões de habitantes representa a capital Belo Horizonte, reforçando a discrepância populacional de Minas Gerais.
@@ -175,6 +259,27 @@ Coeficiente de variação: 391,84%
 O coeficiente de variação indica uma dispersão extremamente alta para os valores da população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana (proporção de três vezes mais) indica que metade das cidades de Minas possui 8.048 cidadãos ou menos no momento observado.
 
 **4.3 Densidade demográfica**
+
+```{r}
+#| label: demo
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 7: Histograma densidade demográfica"
+#|   - "Figura 8: Boxplot densidade demográfica"
+
+  ggplot(dados, aes(x = densidade_demografica)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Densidade Demográfica (hab/km²)", x = "Densidade Demográfica", y = "Frequência") +
+    tema_trabalho
+  
+ ggplot(dados, aes(y = densidade_demografica)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot Densidade Demográfica (hab/km²)", y = "Densidade Demográfica", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
 
 O gráfico de histograma evidencia uma maior concentração de densidade demográfica nas faixas iniciais. Em suma, há uma distribuição fortemente assimétrica à direita, de modo que a grande massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a ocupação territorial do estado, que é composta principalmente por muitos municípios com concentrações de habitantes muito pequenas por quilômetro quadrado.
 
@@ -192,6 +297,27 @@ De forma semelhante à última análise, o coeficiente de variação é extremam
 
 **4.4 População estimada**
 
+```{r}
+#| label: populacao estimada
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 9: Histograma população estimada"
+#|   - "Figura 10: Boxplot população estimada"
+
+  ggplot(dados, aes(x = populacao_estimada)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma População Extimada", x = "População Estimada (Pessoas)", y = "Frequência") +
+    tema_trabalho
+
+ ggplot(dados, aes(y = populacao_estimada)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot População estimada", y = "População Estimada (Pessoas)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
+
 A leitura do histograma revela um cenário similar às variáveis anteriores, de modo que a distribuição dos dados se concentra fortemente logo na parte inicial do gráfico. Esse padrão significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Tal configuração traduz a perspectiva demográfica mineiro a qual é delimitada por uma vasta quantidade de municípios de pequeno porte populacional.
 
 Olhando para o boxplot, nota-se como ele reforça essa concentração extrema de dados por meio de uma caixa completamente achatada na base, que demonstra onde a maior parte dos valores está agrupada. Além do mais, esse gráfico torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina. A título de curiosidade, de forma similar à última análise, o ponto mais isolado no topo do gráfico que ultrapassa a marca de 2 milhões de habitantes representa a estimativa para a capital Belo Horizonte, reforçando a discrepância populacional de Minas Gerais.
@@ -201,6 +327,27 @@ Esse comportamento é completamente coerente com o cálculo das medidas de resum
 De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
 **4.5 Escolarização**
+
+```{r}
+#| label: escolarizacao
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 11: Histograma escolarização"
+#|   - "Figura 12: Boxplot escolarização"
+
+  ggplot(dados, aes(x = escolarizacao)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Taxa de Escolarização (6 a 14 anos)", x = "Escolarização (%)", y = "Frequência") +
+    tema_trabalho
+  
+ ggplot(dados, aes(y = escolarizacao)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "boxplot Taxa de Escolarização (6 a 14 anos)", y = "Escolarização (%)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
 
 O gráfico de histograma deixa evidente que há uma maior concentração da taxa de escolarização nas faixas finais, bem próximas de 100%. Isso significa que, ao contrário das variáveis anteriores, há uma distribuição fortemente assimétrica à esquerda, em que a significativa massa de dados está localizada no lado direito do gráfico, enquanto o restante forma uma cauda longa em direção aos valores mais baixos. Esse comportamento reflete que a grande maioria dos municípios do estado possui índices de escolarização infantil bastante elevados.
 
@@ -218,6 +365,27 @@ O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior par
 
 **4.6 IDHM**
 
+```{r}
+#| label: idhm
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 13: Histograma IDHM"
+#|   - "Figura 14: Boxplot IDHM"
+
+  ggplot(dados, aes(x = idhm)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma IDHM", x = "Índice de Desenvolvimento Humano Municipal", y = "Frequência") +
+    tema_trabalho
+  
+ ggplot(dados, aes(y = idhm)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot IDHM", y = "Índice de Desenvolvimento Humano Municipal", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
+
 O gráfico de histograma deixa evidente que há uma distribuição bem distribuída e equilibrada, praticamente simétrica, de modo que a significativa massa de dados está localizada no centro do gráfico (em torno de 0,6 e 0,7), enquanto as frequências vão diminuindo de forma parecida tanto em direção aos valores mais baixos (à esquerda) quanto aos valores mais altos (à direita). Esse comportamento reflete que a maior parte dos municípios mineiros compartilha de um patamar médio de desenvolvimento humano.
 
 Ademais, é notório como o gráfico de boxplot reforça essa simetria a partir de uma caixa bem distribuída e com uma altura mais evidente, o que demonstra uma dispersão moderada e controlada. A linha preta horizontal que corta essa caixa representa a mediana (0,67) e, por estar posicionada no centro da estrutura, confirma visualmente a simetria dos dados. Além do mais, esse gráfico demonstra a baixíssima quantidade de outliers no conjunto de dados, apresentando apenas um ponto preto isolado no extremo inferior e outro no extremo superior, mostrando que os casos muito discrepantes são raros nessa variável.
@@ -233,6 +401,27 @@ Coeficiente de variação: 7,43%
 Os valores de média e mediana iguais confirmam que os dados se apresentam de forma simétrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outras variáveis, o IDHM se mantem relativamente estável.
 
 **4.7 Mortalidade infantil**
+
+```{r}
+#| label: mortalidade
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 15: Histograma mortalidade infantil"
+#|   - "Figura 16: Boxplot mortalidade infantil"
+
+  ggplot(dados, aes(x = mortalidade_infantil)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Mortalidade Infantil", x = "Óbitos por mil nascidos vivos", y = "Frequência") +
+    tema_trabalho 
+  
+  ggplot(dados, aes(y = mortalidade_infantil)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot mortalidade infantil", y = "Óbitos por mil nascidos vivos", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
 
 O gráfico de histograma deixa evidente que há uma maior concentração de taxas de mortalidade infantil nas faixas iniciais, com o pico principal ocorrendo entre 10 e 15 óbitos por mil nascidos vivos. Isso significa que há uma distribuição assimétrica à direita, em que a maior parte da massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa que vai se estendendo em direção aos valores mais altos. Esse comportamento reflete que, embora a maioria dos municípios mineiros apresente índices de mortalidade mais controlados, ainda há uma parcela de cidades em patamares agravantes.
 
@@ -250,6 +439,49 @@ O alto coeficiente de variação confirma que os dados são distribuídos de for
 
 **4.8 Receitas/Despesas brutas**
 
+```{r}
+#| label: receitas
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 17: Histograma Receitas brutas"
+#|   - "Figura 18: Boxplot Receitas brutas"
+
+
+ ggplot(dados, aes(x = receitas_brutas)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Receitas Brutas", x = "Receitas (R$)", y = "Frequência") +
+    tema_trabalho
+ 
+ggplot(dados, aes(y = receitas_brutas)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot Receitas Brutas", y = "Receitas (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
+
+```{r}
+#| label: despesas
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 19: Histograma Despesas brutas"
+#|   - "Figura 20: Boxplot Despesas brutas"
+
+ggplot(dados, aes(x = despesas_brutas)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Despesas Brutas ", x = "Despesas (R$)", y = "Frequência") +
+    tema_trabalho
+
+ ggplot(dados, aes(y = despesas_brutas)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot Despesas Brutas", y = "Despesas (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
+
 O gráfico de histograma deixa evidente que há uma maior concentração tanto de receitas quanto de despesas brutas nas faixas iniciais. Isso significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a realidade orçamentária do estado, evidenciando que a grande maioria dos municípios mineiros opera com volumes de recursos financeiros muito pequenos.
 
 Ademais, é notório como o gráfico de boxplot reforça essa concentração extrema de dados a partir de uma caixa completamente achatada na base do gráfico, a qual demonstra onde a maior parte dos valores orçamentários está. Além do mais, o boxplot torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina que se estendem verticalmente de forma expressiva. A título de curiosidade, os pontos mais isolados no topo do gráfico, que chegam a superar a marca de 15 bilhões de reais, representam os valores associados à capital Belo Horizonte, reforçando a brutal discrepância e a centralização de recursos econômicos em Minas Gerais.
@@ -265,6 +497,27 @@ Coeficientes de variação: 468%/471%
 Esses valores reforçam que existe uma distribuição extremamente desigual do orçamento mineiro. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
 
 **4.9 PIB per capita**
+
+```{r}
+#| label: PIB
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Figura 21: Histograma PIB per capita"
+#|   - "Figura 22: Boxplot PIB per capita"
+
+ ggplot(dados, aes(x = pib_per_capita)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma PIB per Capita", x = "PIB per Capita (R$)", y = "Frequência") +
+    tema_trabalho
+ 
+ ggplot(dados, aes(y = pib_per_capita)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot PIB per Capita", y = "PIB per Capita (R$)", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
 
 O gráfico de histograma deixa evidente que há uma maior concentração de valores de PIB per capita nas faixas iniciais, com o maior volume de municípios se situando entre 15.000 e 30.000 reais. Isso significa que há uma distribuição assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda que se estende de maneira contínua em direção aos valores mais altos. Esse comportamento reflete a realidade econômica do estado, mostrando que a maior parte das cidades mineiras opera em patamares de produção de riqueza por habitante relativamente modestos.
 
@@ -284,9 +537,37 @@ Essa análise corrobora com a última ao, através de um alto coeficiente de var
 
 **5.1 PIB per capta dos 10 maiores municípios em área de MG**
 
+```{r}
+#| label: PIB 10
+#| fig-cap: 
+#|   - "Figura 23: Gráfico de barras do PIB per capita dos 10 maiores municípios em área de MG"
+#|  
+#FILTRAR
+  maiores_areas <- dados %>%
+    arrange(desc(area_territorial)) %>% 
+    slice_head(n = 10)                 
+  
+#GRÁFICO PIB PER CAPITA
+  ggplot(maiores_areas, aes(x = reorder(municipio, -pib_per_capita), y = pib_per_capita)) +
+    geom_col(fill = cores[2], color = "black", alpha = 0.8) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs( title = "PIB per Capita dos 10 Maiores Municípios em Área de MG",
+      x = "Município",
+      y = "PIB per Capita (R$)") + tema_trabalho +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
 O gráfico evidencia uma desigualdade significativa do PIB per capta entre os maiores municípios mineiros em extensão territorial de Minas Gerais. É perceptível que Paracatu, Uberlândia e Uberaba apresentam uma economia mais influente, mas municípios como Arinos e, principalmente, Januária possuem um valor de PIB inferior, indicando diferenças importantes no nível de atividade econômica e produtividade local.
 
 **5.2 Top 10 municípios mais desenvolvidos de Minas Gerais**
+
+```{r}
+#| label: top 10
+#| fig-cap: 
+#|   - "Figura 24: Gráfico de barras 10 municípios mais desenvolvidos de Minas Gerais"
+
+
+```
 
 O gráfico foi construído a partir de um índice de desenvolvimento criado pela média de quatro indicadores: PIB per capita, IDHM, taxa de escolarização e mortalidade infantil. Inicialmente, todas as variáveis foram padronizadas por meio do escore-z, permitindo que indicadores com escalas diferentes pudessem ser comparados. No caso da mortalidade infantil, o sinal foi invertido para que menores taxas contribuíssem positivamente para o índice. Em seguida, foi calculada a média desses indicadores padronizados, gerando um índice único para cada município. Por fim, os municípios foram ordenados de forma decrescente e os dez maiores valores foram selecionados para compor o gráfico.
 
@@ -305,9 +586,9 @@ Em relação ao banco de dados analisado, é possível enxergar algumas correla�
 **6.1 PIB per capita e escolarização**
 
 ```{r}
-#| echo: false
-#| warning: false
-#| message: false
+#| label: pib esco
+#| fig-cap: 
+#| - "Figura 25: Gráfico de ?? PIB per capita e escolarização"
 
 
 
@@ -347,9 +628,10 @@ Portanto, conclui-se que as variáveis não possuem correlação real na prátic
 **6.2 PIB per capita e mortalidade infantil**
 
 ```{r}
-#| echo: false
-#| warning: false
-#| message: false
+#| label: pib mort
+#| fig-cap: 
+#| - "Figura 26: Gráfico de ?? PIB per capita e mortalidade infantil"
+
 ggplot(
   dados,
   aes(
@@ -388,9 +670,10 @@ Tal percepção sugere que municípios mais ricos tendem a oferecer melhores con
 **6.3 IDHM e escolarização**
 
 ```{r}
-#| echo: false
-#| warning: false
-#| message: false
+#| label: idhm esco
+#| fig-cap: 
+#| - "Figura 27: Gráfico de ?? IDHM e escolarização"
+
 ggplot(
   dados,
   aes(
@@ -423,14 +706,10 @@ No entanto, a maioria dos municípios está concentrada próxima ao valor máxim
 
 **6.4 Mortalidade infantil por faixa de IDHM**
 
-De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea.
-
-**6.5 Mortalidade infantil por faixa de IDHM**
-
 ```{r}
-#| echo: false
-#| warning: false
-#| message: false
+#| label: mort idhm
+#| fig-cap: 
+#| - "Figura 28: Gráfico de ?? Mortalidade infantil por faixa de IDHM"
 
 dados$faixa_idhm <- cut(
   dados$idhm,
@@ -471,12 +750,13 @@ Nesse contexto, o cálculo de correlações comprova tal comportamento ao result
 
 Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.
 
-**6.6 Receitas e despesas municipais**
+**6.5 Receitas e despesas municipais**
 
 ```{r}
-#| echo: false
-#| warning: false
-#| message: false
+#| label: recet desp
+#| fig-cap: 
+#| - "Figura 29: Gráfico de ?? Receitas e despesas municipais"
+
 ggplot(
   dados,
   aes(
@@ -509,3 +789,7 @@ O gráfico que relaciona receitas e despesas municipais apresenta a associação
 Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1.
 
 É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.
+
+### REFERÊNCIAS
+
+### APÊNDICE A
