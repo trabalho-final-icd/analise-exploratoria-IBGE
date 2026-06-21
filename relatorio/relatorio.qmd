@@ -1,39 +1,55 @@
 ---
 title: "Relatório"
 format: html
+embed-resources: true
 editor: visual
+echo: false
+warning: false
+message: false
 ---
 
-## 1. Introdução
-```{r}
-#| include: false
-#| echo: false
-#| warning: false
-#| message: false
+### 1. Introdução
 
+```{r}
+#| label: bibliotecas
+#| include: false
 library(ggplot2)
 library(paletteer)
 library(MetBrewer)
 library(scales)
 library(readxl)
 library(dplyr)
+library(tidyr)
+library(purrr)
 
 dados <- read_xlsx("../dados/BaseDadosIBGE_MG.xlsx")
 source("../scripts/script.R")
 
 ```
 
+```{r}
+#| label: tema
+#| include: false
+cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
+
+tema_trabalho <- theme_minimal() +
+  theme(plot.title = element_text(
+      face = "bold",
+      hjust = 0.5,
+      size = 14), axis.title = element_text(face = "bold"))
+```
+
 A análise de dados é uma ferramenta importante para compreender diferentes aspectos da realidade social, econômica e demográfica de uma região. A partir da exploração de indicadores estatísticos, é possível identificar padrões, comparar municípios e observar relações entre variáveis que ajudam a explicar fenômenos presentes na sociedade.
 
 Neste trabalho, foi utilizada uma base de dados com informações dos municípios de Minas Gerais, contendo indicadores de população, educação, saúde, desenvolvimento humano, finanças públicas e atividade econômica. Esses dados permitem caracterizar os municípios e observar diferenças socioeconômicas entre eles. A partir dessa base, são realizadas análises exploratórias para descrever o comportamento das variáveis e investigar possíveis relações entre os indicadores selecionados.
 
-## 2. Objetivos
+### 2. Objetivos
 
-### 2.1 Objetivo geral
+**2.1 Objetivo geral**
 
 Realizar uma análise exploratória dos dados dos municípios de Minas Gerais, visando descrever a distribuição dos principais indicadores socioeconômicos e investigar possíveis relações entre eles.
 
-### 2.2 Objetivos específicos
+**2.2 Objetivos específicos**
 
 - Realizar a leitura e o tratamento da base de dados;
 
@@ -47,9 +63,9 @@ Realizar uma análise exploratória dos dados dos municípios de Minas Gerais, v
 
 - Calcular e interpretar coeficientes de correlação.
 
-## 3. Metodologia
+### 3. Metodologia
 
-### 3.1 Leitura e tratamento dos dados
+**3.1 Leitura e tratamento dos dados**
 
 A base de dados foi importada para o R por meio da função read_xlsx() do pacote readxl. O conjunto de dados contém informações referentes aos 853 municípios do estado de Minas Gerais, abrangendo indicadores demográficos, sociais e econômicos.
 
@@ -61,7 +77,7 @@ Também foi realizada a verificação de valores ausentes, de registros duplicad
 
 Após essas etapas, a base foi considerada adequada para a realização das análises descritivas, construções gráficas e estudos de associação apresentados nas seções seguintes.
 
-### 3.2 Tratamentos para visualização
+**3.2 Tratamentos para visualização**
 
 Para a construção dos gráficos exploratórios, a base foi transformada para o formato longo. Inicialmente, foram selecionadas apenas as variáveis numéricas da base com select(all_of(dadosnum)).
 
@@ -69,101 +85,212 @@ Em seguida, foi aplicada a função pivot_longer(), reorganizando as variáveis 
 
 Para o boxplot entre mortalidade infantil e IDHM, foi criada uma variável categórica com base nos quartis do IDHM, utilizada apenas para fins de visualização, sem alteração dos valores originais.
 
-## 4. Medidas de resumo
+### 4. Análise das variáveis
 
-### 4.1 Área territorial
+```{r}
+#| label: ajustes
 
-- Média: 687,59
+#Tabelas
 
-- Mediana: 363,82
+#Graficos
+dadosnum <- names(dados)[sapply(dados, is.numeric)]
+ numlg <- dados %>%
+     select(all_of(dadosnum)) %>%
+     pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor")
 
-- Coeficiente de variação: 140,47%
+```
 
-A área média maior que a mediana indica que a maior parte dos dados se concentram em valores mais baixos, ou seja, pode-se afirmar que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. O coeficiente de variação indica que esses valores possuem uma dispersão muito alta.
+O comportamento de cada variável numérica foi analisado por meio de recursos gráficos e de um resumo estatístico dos dados. 
 
-### 4.2 População
+Na primeira etapa, os recursos visuais utilizados foram o histograma (gráfico de barras que representa a distribuição de frequências de dados contínuos) e o boxplot (diagrama de caixas). A partir deles, é possível observar a variação de frequência de cada variável e visualizar a discrepância entre os dados, o que facilita a identificação de possíveis valores atípicos chamados de outliers. 
 
-- Média: 24.079,71
+```{r}
+#| label: tabela 1
 
-- Mediana: 8.048
+```
 
-- Coeficiente de variação: 391,84%
+Tabela 1
 
-O coeficiente de variação indica uma dispersão extremamente alta para os valores de população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana indica que metade das cidades de Minas possuem 8.048 cidadãos ou menos no momento observado. O a proporção da média 3 vezes maior do que a mediana condiz com o coeficiente de variação obtido.
+```{r}
+#| label: tabela 2
 
-### 4.3 Densidade demográfica
 
-- Média: 69,09
+```
 
-- Mediana: 22,09
+Tabela 2
 
-- Coeficiente de variação: 455,11%
+Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média, a mediana (valor que ocupa a posição central dos dados) e o coeficiente de variação (tabela 1). Este último indica o quanto os dados variam em relação à média, de modo que um valor baixo sinaliza pequena dispersão, enquanto um valor alto indica uma grande dispersão dos dados. Além disso, foi possível encontrar o máximo e mínimo de cada variável (tabela 2). 
 
-Coeficiente de dispersão extremamente alto. Há muitas cidades com densidade demográfica baixa e poucas com esse valor muito alto, tal qual nas úlltimas análises.
+**4.1 Área territorial**
 
-### 4.4 População estimada
+```{r}
+#| label: fig-graficos
+#| fig-cap: 
+#|   - "Histograma área territorial"
+#|   - "Boxplot área territorial"
+#| layout-ncol: 2
 
-- Média: 25.080,24
+ ggplot(dados, aes(x = area_territorial)) +
+    geom_histogram(fill = cores[1], color = "black", bins = 30, na.rm = TRUE) +
+    scale_x_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Histograma Área Territorial (km²)", x = "Área Territorial", y = "Frequência") +
+    tema_trabalho
+ 
+ ggplot(dados, aes(y = area_territorial)) +
+    geom_boxplot(fill = cores[4], color = "black", na.rm = TRUE) +
+    scale_y_continuous(labels = scales::label_number(big.mark = ".", decimal.mark = ",")) +
+    labs(title = "Boxplot área Territorial (km²)", y = "Área Territorial", x = "") +
+    tema_trabalho + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+  
+```
 
-- Mediana: 8.237
+O gráfico de histograma deixa evidente que há uma maior concentração de área territorial entre os primeiros 1500 km2. Isso significa que há uma distribuição fortemente assimétrica à direita, em que uma grande massa de dados está localizada no início do gráfico (à esquerda), enquanto o restante do gráfico forma uma cauda longa em direção aos valores mais altos (à direita). Isso reflete a realidade geográfica do estado de Minas Gerais, já que ele é composto por uma enorme quantidade de municípios de pequeno porte territorial.
 
-- Coeficiente de variação: 393,82%
+É importante ressaltar que o gráfico de boxplot reforça essa concentração de dados em cidades de área menor, tendo em vista que sua caixa é mais achatada e demonstra como os valores estão próximos entre si. Além do mais, embora pudesse ser visto no gráfico anterior, nesse torna-se mais evidente a quantidade de outliers no conjunto dados, que é representando pelos pontos pretos fora da caixa. Por fim, a linha preta horizontal que corta a caixa representa a mediana da área territorial, que se posiciona bem próxima de zero. Isso confirma que 50% dos municípios possuem extensões territoriais muito reduzidas. O fato de a distância entre a mediana e o topo da caixa (3º quartil) ser visivelmente maior do que a distância até a base (1º quartil) reforça numericamente a forte assimetria que foi detectada no histograma, mostrando que a dispersão dos dados é muito maior entre as maiores cidades do que entre as menores.
+
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
+
+Média: 687,59
+
+Mediana: 363,82
+
+Coeficiente de variação: 140,47%
+
+Como a área média é maior que a mediana, é possível concluir que a maior parte dos dados se concentram em valores mais baixos, o que conclui novamente que Minas possui uma grande quantidade de municípios pequenos, enquanto uma menor parte tem muito mais extensão territorial. Além disso, nota-se que coeficiente de variação indica que esses valores possuem uma dispersão muito alta em relação à média, reforçando a grande heterogeneidade do estado.
+
+**4.2 População**
+
+O gráfico de histograma deixa evidente que há uma maior concentração de população nas faixas iniciais. Isso significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a demografia do estado, que é composta principalmente por muitos municípios com populações muito pequenas.
+
+Ademais, é notório como o gráfico de boxplot reforça essa concentração extrema de dados a partir de uma caixa completamente achatada na base do gráfico, a qual demonstra onde a maior parte dos valores está. Além do mais, o boxplot torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina. A título de curiosidade, o ponto mais isolado no topo do gráfico que ultrapassa a marca de 2 milhões de habitantes representa a capital Belo Horizonte, reforçando a discrepância populacional de Minas Gerais.
+
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
+
+Média: 24.079,71
+
+Mediana: 8.048
+
+Coeficiente de variação: 391,84%
+
+O coeficiente de variação indica uma dispersão extremamente alta para os valores da população entre os municípios de Minas Gerais. Novamente, a média maior do que a mediana (proporção de três vezes mais) indica que metade das cidades de Minas possui 8.048 cidadãos ou menos no momento observado.
+
+**4.3 Densidade demográfica**
+
+O gráfico de histograma evidencia uma maior concentração de densidade demográfica nas faixas iniciais. Em suma, há uma distribuição fortemente assimétrica à direita, de modo que a grande massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a ocupação territorial do estado, que é composta principalmente por muitos municípios com concentrações de habitantes muito pequenas por quilômetro quadrado.
+
+O gráfico de boxplot reforça essa concentração extrema de dados a partir de uma caixa completamente achatada na base do gráfico, a qual demonstra onde a maior parte dos valores está. Além do mais, o boxplot torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina. A título de curiosidade, o ponto mais isolado no topo do gráfico que ultrapassa a marca de 6.000 hab/km² representa a capital Belo Horizonte, reforçando a discrepância de adensamento urbano de Minas Gerais.
+
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
+
+Média: 69,09
+
+Mediana: 22,09
+
+Coeficiente de variação: 455,11%
+
+De forma semelhante à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
+
+**4.4 População estimada**
+
+A leitura do histograma revela um cenário similar às variáveis anteriores, de modo que a distribuição dos dados se concentra fortemente logo na parte inicial do gráfico. Esse padrão significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Tal configuração traduz a perspectiva demográfica mineiro a qual é delimitada por uma vasta quantidade de municípios de pequeno porte populacional.
+
+Olhando para o boxplot, nota-se como ele reforça essa concentração extrema de dados por meio de uma caixa completamente achatada na base, que demonstra onde a maior parte dos valores está agrupada. Além do mais, esse gráfico torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina. A título de curiosidade, de forma similar à última análise, o ponto mais isolado no topo do gráfico que ultrapassa a marca de 2 milhões de habitantes representa a estimativa para a capital Belo Horizonte, reforçando a discrepância populacional de Minas Gerais.
+
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
 
 De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
-### 4.5 Escolarização
+**4.5 Escolarização**
 
-- Média: 98,99%
+O gráfico de histograma deixa evidente que há uma maior concentração da taxa de escolarização nas faixas finais, bem próximas de 100%. Isso significa que, ao contrário das variáveis anteriores, há uma distribuição fortemente assimétrica à esquerda, em que a significativa massa de dados está localizada no lado direito do gráfico, enquanto o restante forma uma cauda longa em direção aos valores mais baixos. Esse comportamento reflete que a grande maioria dos municípios do estado possui índices de escolarização infantil bastante elevados.
 
-- Mediana: 99,29%
+Ademais, é notório como o gráfico de boxplot reforça essa concentração extrema de dados na parte superior, apresentando uma caixa localizada no topo do gráfico, a qual demonstra onde a maior parte dos valores está concentrada. A linha preta horizontal que corta essa caixa representa a mediana (99,29%) e, por estar posicionada tão próxima ao limite superior, confirma que pelo menos metade dos municípios mineiros possui índices de escolarização quase totalmente universalizados. Além do mais, o boxplot torna evidente que os outliers, representados pelos pontos pretos, aparecem desta vez abaixo da caixa. Esse formato indica que os municípios discrepantes do conjunto de dados são aqueles que possuem taxas de escolarização abaixo do padrão do estado, chegando a marcas próximas de 85%.
 
-- Coeficiente de variação: 1,37%
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
+
+Média: 98,99%
+
+Mediana: 99,29%
+
+Coeficiente de variação: 1,37%
 
 O coeficiente de variação de 1,37% indica dados muito homogêneos. A maior parte dos municípios em Minas possuem taxa de escolarização igual ou menor do que 99,29%. A média de valor menor indica que podem existir algumas cidades com essa taxa menor de forma mais discrepante, puxando a média para baixo.
 
-### 4.6 IDHM
+**4.6 IDHM**
 
-- Média: 0,67
+O gráfico de histograma deixa evidente que há uma distribuição bem distribuída e equilibrada, praticamente simétrica, de modo que a significativa massa de dados está localizada no centro do gráfico (em torno de 0,6 e 0,7), enquanto as frequências vão diminuindo de forma parecida tanto em direção aos valores mais baixos (à esquerda) quanto aos valores mais altos (à direita). Esse comportamento reflete que a maior parte dos municípios mineiros compartilha de um patamar médio de desenvolvimento humano.
 
-- Mediana: 0,67
+Ademais, é notório como o gráfico de boxplot reforça essa simetria a partir de uma caixa bem distribuída e com uma altura mais evidente, o que demonstra uma dispersão moderada e controlada. A linha preta horizontal que corta essa caixa representa a mediana (0,67) e, por estar posicionada no centro da estrutura, confirma visualmente a simetria dos dados. Além do mais, esse gráfico demonstra a baixíssima quantidade de outliers no conjunto de dados, apresentando apenas um ponto preto isolado no extremo inferior e outro no extremo superior, mostrando que os casos muito discrepantes são raros nessa variável.
 
-- Coeficiente de variação: 7,43%
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
 
-Os valores de média e mediana iguais indicam que os dados se apresentam de forma simétrrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outrass variáveis, o IDHM se mantem relativamente estável.
+Média: 0,67
 
-### 4.7 Mortalidade infantil
+Mediana: 0,67
 
-- Média: 18,66
+Coeficiente de variação: 7,43%
 
-- Mediana: 14,51
+Os valores de média e mediana iguais confirmam que os dados se apresentam de forma simétrica. O coeficiente de variação de 7,43% indica que existe pouca variação entre os dados, ou seja, apesar das desigualdades observadas nas outras variáveis, o IDHM se mantem relativamente estável.
 
-- Coeficiente de variação: 73,58%
+**4.7 Mortalidade infantil**
 
-O alto coeficiente de variação indica que os dados são distribuídos de forma não homogênea. A média maior que a mediana indica assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo uma possível desigualdade.
+O gráfico de histograma deixa evidente que há uma maior concentração de taxas de mortalidade infantil nas faixas iniciais, com o pico principal ocorrendo entre 10 e 15 óbitos por mil nascidos vivos. Isso significa que há uma distribuição assimétrica à direita, em que a maior parte da massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa que vai se estendendo em direção aos valores mais altos. Esse comportamento reflete que, embora a maioria dos municípios mineiros apresente índices de mortalidade mais controlados, ainda há uma parcela de cidades em patamares agravantes.
 
-### 4.8 Receitas/Despesas brutas
+Ademais, nota-se como o gráfico de boxplot reforça essa assimetria. Diferente de outras variáveis, a caixa não se apresenta totalmente achatada na base, indicando uma dispersão moderada entre os municípios comuns. A linha preta horizontal que corta a caixa representa a mediana e o fato de ela estar mais próxima da base da caixa reforça graficamente a assimetria à direita. Além do mais, esse gráfico torna evidente a quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima do limite superior, chamando a atenção para municípios isolados onde o índice chega a atingir a alarmante marca de até 100 óbitos por mil nascidos vivos.
 
-- Médias: 181mi/173mi
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
 
-- Medianas: 56mi/52mi
+Média: 18,66
 
-- Coeficientes de variação: 468%/471%
+Mediana: 14,51
 
-Valores indicam que existe uma distribuição extremamente desigual dos valores. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
+Coeficiente de variação: 73,58%
 
-### 4.9 PIB per capita
+O alto coeficiente de variação confirma que os dados são distribuídos de forma não homogênea. A média maior que a mediana reforça assimetria à direita, com algumas poucas cidades tendo uma taxa de mortalidade infantil mais distantes da média, refletindo essa desigualdade.
 
-- Média: 34.487,09
+**4.8 Receitas/Despesas brutas**
 
-- Mediana: 24.727,70
+O gráfico de histograma deixa evidente que há uma maior concentração tanto de receitas quanto de despesas brutas nas faixas iniciais. Isso significa que há uma distribuição fortemente assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda longa e quase imperceptível em direção aos valores mais altos. Esse comportamento reflete a realidade orçamentária do estado, evidenciando que a grande maioria dos municípios mineiros opera com volumes de recursos financeiros muito pequenos.
 
-- Coeficiente de variação: 96,62%
+Ademais, é notório como o gráfico de boxplot reforça essa concentração extrema de dados a partir de uma caixa completamente achatada na base do gráfico, a qual demonstra onde a maior parte dos valores orçamentários está. Além do mais, o boxplot torna evidente a enorme quantidade de outliers no conjunto de dados, representados pelos pontos pretos acima da caixa fina que se estendem verticalmente de forma expressiva. A título de curiosidade, os pontos mais isolados no topo do gráfico, que chegam a superar a marca de 15 bilhões de reais, representam os valores associados à capital Belo Horizonte, reforçando a brutal discrepância e a centralização de recursos econômicos em Minas Gerais.
 
-Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, alguma poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessas variáveis (tabela 1), que resultaram nos seguintes valores:
 
-## 5. Visualização dos dados
+Médias: 181mi/173mi
 
-## 6. Análise dos gráficos de associação de variáveis
+Medianas: 56mi/52mi
+
+Coeficientes de variação: 468%/471%
+
+Esses valores reforçam que existe uma distribuição extremamente desigual do orçamento mineiro. 50% dos municípios possuem renda/despesa na faixa de 50 milhões, no entanto, a média está na faixa de 180 milhões, o que indica que poucas cidades concentram uma movimentação de recursos financeiros fortemente maior.
+
+**4.9 PIB per capita**
+
+O gráfico de histograma deixa evidente que há uma maior concentração de valores de PIB per capita nas faixas iniciais, com o maior volume de municípios se situando entre 15.000 e 30.000 reais. Isso significa que há uma distribuição assimétrica à direita, em que a significativa massa de dados está localizada no lado esquerdo do gráfico, enquanto o restante forma uma cauda que se estende de maneira contínua em direção aos valores mais altos. Esse comportamento reflete a realidade econômica do estado, mostrando que a maior parte das cidades mineiras opera em patamares de produção de riqueza por habitante relativamente modestos.
+
+Ao analisar o gráfico de boxplot, nota-se como ele reforça essa tendência assimétrica. A caixa não se apresenta completamente achatada na base, indicando que existe uma dispersão interna considerável mesmo entre os municípios que compõem o corpo central dos dados. A linha preta horizontal que corta a estrutura representa a mediana (24.727,70) e, por estar deslocada para a porção inferior da caixa, confirma graficamente a assimetria. Além do mais, o boxplot torna evidente a presença de outliers no conjunto de dados, representados pelos pontos pretos posicionados acima do limite superior, evidenciando cidades com forte atividade econômica concentrada onde o PIB per capita chega a ultrapassar a marca dos 200.000 reais.
+
+Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
+
+Média: 34.487,09
+
+Mediana: 24.727,70
+
+Coeficiente de variação: 96,62%
+
+Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, algumas poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
+
+### 5.
+
+**5.1 PIB per capta dos 10 maiores municípios em área de MG**
+
+O gráfico evidencia uma desigualdade significativa do PIB per capta entre os maiores municípios mineiros em extensão territorial de Minas Gerais. É perceptível que Paracatu, Uberlândia e Uberaba apresentam uma economia mais influente, mas municípios como Arinos e, principalmente, Januária possuem um valor de PIB inferior, indicando diferenças importantes no nível de atividade econômica e produtividade local.
+
+**5.2 Top 10 municípios mais desenvolvidos de Minas Gerais**
+
+O gráfico foi construído a partir de um índice de desenvolvimento criado pela média de quatro indicadores: PIB per capita, IDHM, taxa de escolarização e mortalidade infantil. Inicialmente, todas as variáveis foram padronizadas por meio do escore-z, permitindo que indicadores com escalas diferentes pudessem ser comparados. No caso da mortalidade infantil, o sinal foi invertido para que menores taxas contribuíssem positivamente para o índice. Em seguida, foi calculada a média desses indicadores padronizados, gerando um índice único para cada município. Por fim, os municípios foram ordenados de forma decrescente e os dez maiores valores foram selecionados para compor o gráfico.
+
+### 6. Análise dos gráficos de associação de variáveis
 
 Para compreender melhor a relação entre os indicadores socioeconômicos dos municípios mineiros, foram elaborados gráficos comparando variáveis relacionadas à educação, à saúde, ao desenvolvimento humano e às finanças públicas. A partir dessas visualizações, é possível identificar tendências e padrões que ajudam a entender como esses indicadores se relacionam entre si.
 
@@ -175,24 +302,14 @@ Para cada tipo de medida, há uma situação a qual melhor se adequa utilizá-la
 
 Em relação ao banco de dados analisado, é possível enxergar algumas correlações principais e criar conclusões acerca delas a partir de seus gráficos de dispersão e dos cálculos das medidas desses coeficientes.
 
-### 6.1 PIB per capita e escolarização
+**6.1 PIB per capita e escolarização**
 
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
 
-cores <- paletteer::paletteer_d("MetBrewer::Pissaro")
 
-tema_trabalho <- theme_minimal() +
-  theme(
-    plot.title = element_text(
-      face = "bold",
-      hjust = 0.5,
-      size = 14
-    ),
-    axis.title = element_text(face = "bold")
-  )
 
 ggplot(
   dados,
@@ -227,7 +344,7 @@ Essa pouca variabilidade dos níveis de escolarização afeta relativamente os v
 
 Portanto, conclui-se que as variáveis não possuem correlação real na prática, e que outros fatores como políticas públicas educacionais e a universalização do acesso à educação básica, podem ter um papel importante nesse resultado de altos índices.
 
-### 6.2 PIB per capita e mortalidade infantil
+**6.2 PIB per capita e mortalidade infantil**
 
 ```{r}
 #| echo: false
@@ -268,7 +385,7 @@ Esse comportamento pode ser confirmado ao calcular os Coeficientes de Pearson, d
 
 Tal percepção sugere que municípios mais ricos tendem a oferecer melhores condições de saúde, infraestrutura e saneamento, fatores que contribuem diretamente para a redução dos óbitos infantis, o que reforça a importância das condições econômicas para os indicadores de saúde.
 
-### 6.3 IDHM e escolarização
+**6.3 IDHM e escolarização**
 
 ```{r}
 #| echo: false
@@ -304,11 +421,11 @@ Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa
 
 No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
 
-### 6.4 Mortalidade infantil por faixa de IDHM
+**6.4 Mortalidade infantil por faixa de IDHM**
 
 De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea.
 
-## 4.4 Mortalidade infantil por faixa de IDHM
+**6.5 Mortalidade infantil por faixa de IDHM**
 
 ```{r}
 #| echo: false
@@ -354,7 +471,7 @@ Nesse contexto, o cálculo de correlações comprova tal comportamento ao result
 
 Tal percepção pode estar relacionada a fatores como melhores condições de vida, maior acesso aos serviços de saúde e melhores níveis de educação. Dessa forma, o gráfico reforça a ideia de que municípios com maior desenvolvimento humano tendem a oferecer condições mais favoráveis para a saúde da população.
 
-### 6.5 Receitas e despesas municipais
+**6.6 Receitas e despesas municipais**
 
 ```{r}
 #| echo: false
