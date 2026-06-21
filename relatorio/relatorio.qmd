@@ -153,7 +153,7 @@ ggplot(numlg, aes(x = Valor)) +
 
 ```{r}
 #| label: boxplot
-#|fig-cap: 
+#| fig-cap: 
 #| - "Figura 2: Boxplot de todas as variáveis"
 
  ggplot(numlg, aes(y = Valor)) +
