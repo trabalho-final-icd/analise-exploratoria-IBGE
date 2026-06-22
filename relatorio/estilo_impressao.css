@@ -1,0 +1,19 @@
+@media print {
+  /* Nunca corta um gráfico ou tabela no meio */
+  .cell-output-display, figure, table, img {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Mantém o título de seção colado ao que vem depois dele */
+  h1, h2, h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Evita "viúvas e órfãs" de texto */
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+}

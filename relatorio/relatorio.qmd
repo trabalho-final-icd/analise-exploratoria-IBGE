@@ -3,6 +3,8 @@ title: " "
 format: 
   html:
     lightbox: true
+    css: estilo_impressao.css
+
 embed-resources: true
 editor: visual
 echo: false
@@ -41,6 +43,19 @@ Belo Horizonte – MG
 
 2026
 :::
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 1. Introdução
 
