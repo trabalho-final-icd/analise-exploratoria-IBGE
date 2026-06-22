@@ -981,7 +981,25 @@ A partir da análise feita no desenvolver do projeto, percebe-se que Minas Gerai
 
 É possível compreender que, por conta dessas características, a maioria das variáveis se comportam de forma extremamente heterogênea. As únicas variáveis que se apresentam de forma relativamente estável é IDHM e taxa de escolarização. Isso reflete que, apesar das desigualdades, existe um esforço relativamente bem sucedido em assegurar um estado de bem-estar social incipiente, embora haja diversas inequidades ao longo do estado de Minas Gerais, que merecem atenção.
 
-Percebe-se, também, que não existem correlações muito fortes entre a maioria das variáveis, ou seja, foi observado, por exemplo, que IDHM e taxa de escolarização não possuem coeficientes de correlação muito expressivos, isso pode indicar que grande parte das variáveis se comportam de forma relativamente independente. Dentre essas correlações menos intensas, chama a atenção a associação entre mortalidade infantil e IDHM, em que se compreende que, apesar de existir uma correlação fraca, ela é definitivamente maior do que as outras observadas previamente no estudo, o que dá a essa comparação um peso maior. A correlação mais forte encontrada diz respeito a receitas e despesas municipais, em que existe uma correlação linear quase perfeita, o que intuitivamente faz todo o sentido, uma vez que cidades que geram mais receita tendem a ter mais gastos. \# REFERÊNCIAS
+Percebe-se, também, que não existem correlações muito fortes entre a maioria das variáveis, ou seja, foi observado, por exemplo, que IDHM e taxa de escolarização não possuem coeficientes de correlação muito expressivos, isso pode indicar que grande parte das variáveis se comportam de forma relativamente independente. Dentre essas correlações menos intensas, chama a atenção a associação entre mortalidade infantil e IDHM, em que se compreende que, apesar de existir uma correlação fraca, ela é definitivamente maior do que as outras observadas previamente no estudo, o que dá a essa comparação um peso maior. A correlação mais forte encontrada diz respeito a receitas e despesas municipais, em que existe uma correlação linear quase perfeita, o que intuitivamente faz todo o sentido, uma vez que cidades que geram mais receita tendem a ter mais gastos.
+
+# REFERÊNCIAS
+
+INSTITUTO BRASILEIRO DE GEOGRAFIA E ESTATÍSTICA (IBGE). Área territorial brasileira 2022. Rio de Janeiro: IBGE, 2023.
+
+INSTITUTO BRASILEIRO DE GEOGRAFIA E ESTATÍSTICA (IBGE). Censo Demográfico 2022: população e domicílios: primeiros resultados. Rio de Janeiro: IBGE, 2023.
+
+INSTITUTO BRASILEIRO DE GEOGRAFIA E ESTATÍSTICA (IBGE). Estimativas da população residente com data de referência em 1º de julho de 2024. Rio de Janeiro: IBGE, 2024.
+
+INSTITUTO BRASILEIRO DE GEOGRAFIA E ESTATÍSTICA (IBGE). Censo Demográfico 2010: escolarização de 6 a 14 anos. Rio de Janeiro: IBGE, 2010.
+
+PROGRAMA DAS NAÇÕES UNIDAS PARA O DESENVOLVIMENTO (PNUD). Atlas do Desenvolvimento Humano no Brasil. Brasília, DF: PNUD, \[s.d.\].
+
+BRASIL. Ministério da Saúde. Departamento de Informática do Sistema Único de Saúde (DATASUS). Indicadores de mortalidade infantil. Brasília, DF, 2022.
+
+BRASIL. Secretaria do Tesouro Nacional. Sistema de Informações Contábeis e Fiscais do Setor Público Brasileiro (SICONFI). Contas anuais: receitas orçamentárias realizadas (Anexo I-C) e despesas orçamentárias empenhadas (Anexo I-D), 2023. Brasília, DF, 2023. Disponível em: <https://siconfi.tesouro.gov.br/siconfi/pages/public/consulta_finbra/finbra_list.jsf>. Acesso em: jun. 2024.
+
+INSTITUTO BRASILEIRO DE GEOGRAFIA E ESTATÍSTICA (IBGE). Produto Interno Bruto dos Municípios. Rio de Janeiro: IBGE, em parceria com os Órgãos Estaduais de Estatística, Secretarias Estaduais de Governo e Superintendência da Zona Franca de Manaus (SUFRAMA), \[s.d.\].
 
 ## APÊNDICE A – Código utilizado na análise
 
