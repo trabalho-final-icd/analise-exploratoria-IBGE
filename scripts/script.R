@@ -704,6 +704,13 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
   desp_rec_spearman <- cor(dados$despesas_brutas, dados$receitas_brutas, method = "spearman", use = "complete.obs")
   desp_rec_kendall  <- cor(dados$despesas_brutas, dados$receitas_brutas, method = "kendall", use = "complete.obs")
   
+  
+  # PIB per capita x IDHM
+  
+  pib_idhm_pearson  <- cor(dados$pib_per_capita, dados$idhm, method = "pearson")
+  pib_idhm_spearman <- cor(dados$pib_per_capita, dados$idhm, method = "spearman")
+  pib_idhm_kendall  <- cor(dados$pib_per_capita, dados$idhm, method = "kendall")
+  
   # ---- Tabelas separadas ----
   
   tabela_pib_escol <- tibble(
@@ -731,3 +738,30 @@ dadosnum <- names(dados)[sapply(dados, is.numeric)]
     Correlação = round(c(desp_rec_pearson, desp_rec_spearman, desp_rec_kendall), 3)
   )
   
+  tabela_idh_pib <- tibble(
+    Método = c("Pearson", "Spearman", "Kendall"),
+    Correlação = round(c( pib_idhm_pearson,pib_idhm_spearman ,pib_idhm_kendall ), 3)
+  )
+  
+  
+  
+  
+  # 10 maiores municípios em IDHM 
+  top10_idhm <- dados %>%
+    top_n(10, wt = idhm) %>%
+    arrange(desc(idhm))
+  
+  # Gráfico de barras
+  ggplot(top10_idhm, aes(x = reorder(municipio, -idhm), y = idhm)) +
+    geom_bar(stat = "identity", fill = "#2E5A44", color = "black") +  
+    labs(
+      title = "Os 10 Maiores Municípios em IDHM de MG",
+      x = "Município",
+      y = "Índice de Desenvolvimento Humano Municipal (IDHM)"
+    ) +
+    theme_minimal() +
+    theme(
+      plot.title = element_text(face = "bold", h_index = 0.5, size = 14),
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+      panel.grid.major.x = element_blank()
+    )

@@ -131,10 +131,14 @@ Para o boxplot entre mortalidade infantil e IDHM, foi criada uma variável categ
 #Tabelas
 
 #Graficos
+library(tidyverse)
+
 dadosnum <- names(dados)[sapply(dados, is.numeric)]
- numlg <- dados %>%
-     select(all_of(dadosnum)) %>%
-     pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor")
+
+numlg <- dados %>%
+  select(all_of(dadosnum)) %>%
+  select(-z_idhm, -indice_desenvolvimento, -z_pib, -z_mortalidade, -z_escolarizacao ) %>% 
+  pivot_longer(cols = everything(), names_to = "Variavel", values_to = "Valor")
 
 ```
 
@@ -458,6 +462,14 @@ Olhando para o boxplot, nota-se como ele reforça essa concentração extrema de
 
 Esse comportamento é completamente coerente com o cálculo das medidas de resumo dessa variável (tabela 1), que resultou nos seguintes valores:
 
+De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios. Esse comportamento é completamente coerente com o cálculo das mesdidas de resumo dessa variável, que resultou nos seguintes valores:
+
+- Média: 25.080,24
+
+- Mediana: 8.237
+
+- Coeficiente de variação: 393,82%
+
 De forma similar à última análise, o coeficiente de variação é extremamente alto. É possível concluir que a população estimada na maioria das cidades é relativamente menor do que em uma pequena quantidade de outros municípios.
 
 ## 4.5 Escolarização
@@ -667,11 +679,11 @@ Coeficiente de variação: 96,62%
 
 Essa análise corrobora com a última ao, através de um alto coeficiente de variação, mostrar que os dados se distribuem de forma assimétrica, ou seja, algumas poucas cidades concentram valores de PIB per capita muito maiores do que a maioria, criando a disparidade entre média e mediana.
 
-# 5. Análise descritiva relaciona aos municípios
+# 5. Análise descritiva relacionada aos municípios
 
 Embora a variável de municípios seja qualitativa (descreve características, atributos ou categorias que não podem ser medidas numericamente), não significa que ela não possa ser associada com as outras informações fornecidas no banco de dados. Nessa seção, foi realizada essa relação junto com as variáveis PIB per capta, IDHM, taxa de escolarização e mortalidade infantil.
 
-## 5.1 PIB per capta dos 10 maiores municípios em área de MG
+## 5.1 PIB per capita dos 10 maiores municípios em área de MG
 
 ```{r}
 #| label: PIB 10
@@ -702,28 +714,32 @@ O gráfico evidencia uma desigualdade significativa do PIB per capta entre os ma
 #| fig-cap: 
 #|   - "Figura 24: Gráfico de barras 10 municípios mais desenvolvidos de Minas Gerais"
 
-ggplot(top10,
-       aes(x = reorder(municipio,
-                       indice_desenvolvimento),
-           y = indice_desenvolvimento,
-           fill = indice_desenvolvimento)) +
-  geom_col() +
-  coord_flip() +
-  scale_fill_gradientn(colors = cores) +
+
+
+
+# 10 maiores municípios em IDHM 
+top10_idhm <- dados %>%
+  top_n(10, wt = idhm) %>%
+  arrange(desc(idhm))
+
+# Gráfico de barras
+ggplot(top10_idhm, aes(x = reorder(municipio, -idhm), y = idhm)) +
+  geom_bar(stat = "identity", fill = "#2E5A44", color = "black") +  
   labs(
-    title = "Top 10 Municípios Mais Desenvolvidos de Minas Gerais",
+    title = "Os 10 Maiores Municípios em IDHM de MG",
     x = "Município",
-    y = "Índice de Desenvolvimento"
+    y = "Índice de Desenvolvimento Humano Municipal (IDHM)"
   ) +
   theme_minimal() +
   theme(
-    legend.position = "none"
+    plot.title = element_text(face = "bold", h_index = 0.5, size = 14),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+    panel.grid.major.x = element_blank()
   )
-
 
 ```
 
-O gráfico foi construído a partir de um índice de desenvolvimento criado pela média de quatro indicadores: PIB per capita, IDHM, taxa de escolarização e mortalidade infantil. Inicialmente, todas as variáveis foram padronizadas por meio do escore-z, permitindo que indicadores com escalas diferentes pudessem ser comparados. No caso da mortalidade infantil, o sinal foi invertido para que menores taxas contribuíssem positivamente para o índice. Em seguida, foi calculada a média desses indicadores padronizados, gerando um índice único para cada município. Por fim, os municípios foram ordenados de forma decrescente e os dez maiores valores foram selecionados para compor o gráfico.
+O gráfico foi construído a partir da associação entre os municípios e o IDHM. Esse segundo é calculado levando em consideração aspectos como expectativa de vida, índice de escolaridade e o PIB per capita. Tal conjunto de fatores representa o índice de desenvolvimento município. É possível observar que as cidades que figuram entre os 10 maiores IDHMs são cidades que possuem grande relevância econômica para Minas Gerais. Essa análise levanta a hipótese de que variáveis econômicas possam possuir associação com o IDHM, o que vai ser destrinchado a seguir.
 
 # 6. Análise dos gráficos de associação de variáveis
 
@@ -877,6 +893,10 @@ Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa
 
 No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
 
+Esse comportamento é muito semelhante ao observado no par anterior de PIB e escolarização. Ele afeta diretamente o valor das medidas de correlação, pois ao calcular os Coeficientes de Pearson, Spearman e Kendall, acha-se os valores -0.01375387, -0.08892231, -0.05968151, respectivamente. O valor negativo se deve, pois como a escolarização permanece muito alta e concentrada independentemente do nível de IDHM do município, há algumas flutuações que puxam o valor para baixo, embora a correlação entre elas seja quase nula. São exemplos disso, municípios com IDHM menor, mas que conseguem registrar 100% de escolarização e de cidades com IDHM mais elevado apresentam taxas ligeiramente menores.
+
+De modo geral, o gráfico sugere que municípios mais desenvolvidos tendem a apresentar melhores indicadores educacionais, mas a alta cobertura escolar faz com que essa relação apareça de forma menos evidente, tornando-a relativamente homogênea.
+
 ## 6.4 Mortalidade infantil por faixa de IDHM
 
 ```{r}
@@ -975,13 +995,56 @@ Esse destaque significativo é igualmente visto nas medidas de correlação, de 
 
 É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.
 
+## 6.6 PIB per capita e e IDHM
+
+```{r}
+#| label: pib_idhm
+#| fig-cap: 
+#| - "Figura 30: Gráfico de gráfico de dispersão de PIB per capita por faixa de IDHM"
+
+ggplot(
+  dados,
+  aes(
+    x = pib_per_capita,
+    y = idhm
+  )
+) +
+  geom_point(
+    color = cores[5],
+    alpha = 0.7,
+    size = 2
+  ) +
+  scale_x_log10(
+    labels = scales::label_number(
+      big.mark = ".",
+      decimal.mark = ","
+    )
+  ) +
+  labs(
+    title = "PIB per capita e IDHM dos Municípios",
+    x = "PIB per capita (R$)",
+    y = "IDHM"
+  ) +
+  tema_trabalho
+```
+
+```{r}
+#| label: tabela 8
+
+kable(tabela_idh_pib, caption = "Tabela 8: PIB per capita X IDHM")
+
+
+```
+
+O gráfico foi construído a partir da associação entre os municípios e o IDHM. Esse segundo é calculado levando em consideração aspectos como expectativa de vida, índice de escolaridade e o PIB per capita. Tal conjunto de fatores representa o índice de desenvolvimento município. É possível observar que as cidades que figuram entre os 10 maiores IDHMs são cidades que possuem grande relevância econômica para Minas Gerais. Essa análise levanta a hipótese de que variáveis econômicas possam possuir associação com o IDHM, o que vai ser destrinchado a seguir.
+
 # 7. Conclusão
 
 A partir da análise feita no desenvolver do projeto, percebe-se que Minas Gerais é um estado que apresenta uma grande quantidade de municípios, sendo que a maioria deles possui pequeno porte tanto em relação a território propriamente dito quanto em relação a aspectos financeiros. Esse fato contribui para a interpretação de que o estado possui diversas desigualdades entre as cidades, o que foi destrinchado ao longo do estudo.
 
 É possível compreender que, por conta dessas características, a maioria das variáveis se comportam de forma extremamente heterogênea. As únicas variáveis que se apresentam de forma relativamente estável é IDHM e taxa de escolarização. Isso reflete que, apesar das desigualdades, existe um esforço relativamente bem sucedido em assegurar um estado de bem-estar social incipiente, embora haja diversas inequidades ao longo do estado de Minas Gerais, que merecem atenção.
 
-Percebe-se, também, que não existem correlações muito fortes entre a maioria das variáveis, ou seja, foi observado, por exemplo, que IDHM e taxa de escolarização não possuem coeficientes de correlação muito expressivos, isso pode indicar que grande parte das variáveis se comportam de forma relativamente independente. Dentre essas correlações menos intensas, chama a atenção a associação entre mortalidade infantil e IDHM, em que se compreende que, apesar de existir uma correlação fraca, ela é definitivamente maior do que as outras observadas previamente no estudo, o que dá a essa comparação um peso maior. A correlação mais forte encontrada diz respeito a receitas e despesas municipais, em que existe uma correlação linear quase perfeita, o que intuitivamente faz todo o sentido, uma vez que cidades que geram mais receita tendem a ter mais gastos.
+Percebe-se, também, que algumas variáveis possuem índices de correlação muito baixos. IDHM e taxa de escolarização, por exemplo, não possuem coeficientes de correlação muito expressivos, isso pode indicar que essa parte das variáveis se comporta de forma relativamente independente. Dentre essas correlações menos intensas, chama a atenção a associação entre mortalidade infantil e IDHM, em que se compreende que, apesar de existir uma correlação fraca, ela é definitivamente maior do que as outras observadas previamente no estudo, o que dá a essa comparação um peso maior. A correlação mais forte encontrada diz respeito a receitas e despesas municipais, em que existe uma correlação linear quase perfeita, o que intuitivamente faz sentido. Além da associação entre PIB per capita e IDHM, cujo coeficiente de correlação de Spearman resultou em 0,7, indicando uma correlação positiva forte, o que mostra que municípios com mais renda tendem a serem mais desenvolvidos, ainda que o IDHM seja distribuído de forma homogênea entre os municípios de MG.
 
 # REFERÊNCIAS
 
