@@ -486,7 +486,7 @@ tabela_extremos <- data.frame(
    #exibir 
    print(tabela_extremos)
    
-# --------------- geovanna linda --------------- <3
+# --------------- Geovanna  --------------- <3
 
    
 dadosnum <- names(dados)[sapply(dados, is.numeric)]
