@@ -44,19 +44,6 @@ Belo Horizonte – MG
 2026
 :::
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 1. Introdução
 
 ```{r}
@@ -240,7 +227,6 @@ gt(estatisticas_tab) %>%
   )
 ```
 
-
 ```{r}
 #| label: tabela 2
 
@@ -329,7 +315,6 @@ tabela_extremos <- data.frame(
   
    
 ```
-
 
 Já na segunda etapa, realizou-se um resumo estatístico para sinalizar a média, a mediana (valor que ocupa a posição central dos dados) e o coeficiente de variação (tabela 1). Este último indica o quanto os dados variam em relação à média, de modo que um valor baixo sinaliza pequena dispersão, enquanto um valor alto indica uma grande dispersão dos dados.Além disso, foi possível encontrar o máximo e mínimo de cada variável (tabela 2).
 
@@ -786,14 +771,12 @@ ggplot(
 
 ```
 
-
 ```{r}
 #| label: tabela 3
 
 kable(tabela_pib_escol, caption = "Tabela 3: PIB per capita x Escolarização")
 
 ```
-
 
 Neste gráfico, observa-se que a escolarização permanece elevada independentemente do nível de PIB per capita do município. Tanto municípios com menor quanto com maior renda apresentam taxas de escolarização muito próximas de 100%.
 
@@ -838,7 +821,6 @@ ggplot(
   tema_trabalho
 
 ```
-
 
 ```{r}
 #| label: tabela 4
@@ -891,7 +873,6 @@ kable(tabela_idh_escol, caption = "Tabela 5: IDHM x Escolarização")
 
 ```
 
-
 Ao observar o gráfico, percebe-se uma tendência positiva entre o IDHM e a taxa de escolarização. Em geral, municípios com melhores índices de desenvolvimento humano apresentam taxas de escolarização ligeiramente mais altas.
 
 No entanto, a maioria dos municípios está concentrada próxima ao valor máximo de escolarização, o que revela que esse indicador já apresenta níveis bastante elevados em Minas Gerais. Por isso, embora exista uma relação positiva entre as variáveis, as diferenças observadas não são muito expressivas.
@@ -942,7 +923,6 @@ kable(tabela_idh_mort, caption = "Tabela 6: IDHM x Mortalidade Infantil")
 
 ```
 
-
 O gráfico de boxplot mostra como a mortalidade infantil se comporta em diferentes faixas de IDHM. A principal tendência observada é a redução da mortalidade infantil à medida que o IDHM aumenta. Em suma, as faixas com menor desenvolvimento humano apresentam valores mais elevados de mortalidade, enquanto os municípios com IDHM mais alto concentram os menores índices.
 
 Nesse contexto, o cálculo de correlações comprova tal comportamento ao resultar valores de Coeficientes de Pearson, Spearman e Kendall em -0.2375371, -0.3137683, -0.2105332, respectivamente. O valor negativo demonstra que enquanto uma variável cresce (IDH), há o decrescimento da outra (mortalidade). Além disso, é importante ressaltar que como esses resultados obtidos variam no intervalo de 0 a 0,4, há uma correlação fraca entre elas, o que não significa que ela não exista.
@@ -989,14 +969,19 @@ kable(tabela_desp_rec, caption = "Tabela 7: Despesas x Receitas Brutas")
 
 ```
 
-
 O gráfico que relaciona receitas e despesas municipais apresenta a associação mais clara entre todas as analisadas. Os pontos formam uma trajetória bastante próxima de uma linha reta linear crescente, indicando que municípios que arrecadam mais também tendem a gastar mais.
 
 Esse destaque significativo é igualmente visto nas medidas de correlação, de modo que os Coeficientes de Pearson, de Spearman e de Kendall resultaram nos valores de 0.9952322, 0.9820892 e 0.9051228, respectivamente. Esse resultado evidencia não só o sinal positivo, o qual indica que as variáveis caminham no mesmo sentido (se uma cresce, a outra também aumenta), como também revela uma associação muito forte entre elas, já que os coeficientes estão no intervalo entre 0,7 e 1.
 
 É importante destacar, que tal resultado era esperado, uma vez que a capacidade de investimento e de manutenção dos serviços públicos depende diretamente dos recursos disponíveis em cada município. Logo, o gráfico demonstra uma forte relação entre arrecadação e gastos públicos, refletindo a dinâmica financeira das administrações municipais.
 
-# REFERÊNCIAS
+# 7. Conclusão
+
+A partir da análise feita no desenvolver do projeto, percebe-se que Minas Gerais é um estado que apresenta uma grande quantidade de municípios, sendo que a maioria deles possui pequeno porte tanto em relação a território propriamente dito quanto em relação a aspectos financeiros. Esse fato contribui para a interpretação de que o estado possui diversas desigualdades entre as cidades, o que foi destrinchado ao longo do estudo.
+
+É possível compreender que, por conta dessas características, a maioria das variáveis se comportam de forma extremamente heterogênea. As únicas variáveis que se apresentam de forma relativamente estável é IDHM e taxa de escolarização. Isso reflete que, apesar das desigualdades, existe um esforço relativamente bem sucedido em assegurar um estado de bem-estar social incipiente, embora haja diversas inequidades ao longo do estado de Minas Gerais, que merecem atenção.
+
+Percebe-se, também, que não existem correlações muito fortes entre a maioria das variáveis, ou seja, foi observado, por exemplo, que IDHM e taxa de escolarização não possuem coeficientes de correlação muito expressivos, isso pode indicar que grande parte das variáveis se comportam de forma relativamente independente. Dentre essas correlações menos intensas, chama a atenção a associação entre mortalidade infantil e IDHM, em que se compreende que, apesar de existir uma correlação fraca, ela é definitivamente maior do que as outras observadas previamente no estudo, o que dá a essa comparação um peso maior. A correlação mais forte encontrada diz respeito a receitas e despesas municipais, em que existe uma correlação linear quase perfeita, o que intuitivamente faz todo o sentido, uma vez que cidades que geram mais receita tendem a ter mais gastos. \# REFERÊNCIAS
 
 ## APÊNDICE A – Código utilizado na análise
 
